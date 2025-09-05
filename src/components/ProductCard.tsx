@@ -15,7 +15,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const { addToQuote } = useQuote();
 
-  const handleWishlistToggle = () => {
+  const handleWishlistToggle = (e: React.MouseEvent) => {
+    e.stopPropagation(); // ✅ prevent card click
     if (isInWishlist(product.id)) {
       removeFromWishlist(product.id);
     } else {
@@ -23,8 +24,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     }
   };
 
-  const handleAddToQuote = () => {
+  const handleAddToQuote = (e: React.MouseEvent) => {
+    e.stopPropagation(); // ✅ prevent card click
     addToQuote(product);
+  };
+
+  const handleQuickView = (e: React.MouseEvent) => {
+    e.stopPropagation(); // ✅ prevent card click
+    setIsModalOpen(true);
   };
 
   return (
@@ -48,11 +55,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           
           {/* Action Buttons */}
-          <div className={`absolute bottom-4 left-4 right-4 flex justify-center space-x-2 transition-all duration-300 ${
-            isHovered ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
-          }`}>
+          <div
+            className={`absolute bottom-4 left-4 right-4 flex justify-center space-x-2 transition-all duration-300 ${
+              isHovered ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
+            }`}
+          >
             <button
-              onClick={() => setIsModalOpen(true)}
+              onClick={handleQuickView}
               className="p-3 bg-white/90 text-stone-700 rounded-full hover:bg-white hover:text-amber-600 transition-colors shadow-lg backdrop-blur-sm"
             >
               <Eye className="w-4 h-4" />

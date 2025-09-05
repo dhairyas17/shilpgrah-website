@@ -12,7 +12,7 @@ const WishlistPage: React.FC = () => {
   const handleAddAllToQuote = () => {
     wishlist.forEach(product => {
       addToQuote(product);
-      removeFromWishlist(product.id); // ✅ remove after adding
+      removeFromWishlist(product.id);
     });
   };
 
@@ -20,7 +20,7 @@ const WishlistPage: React.FC = () => {
     const product = wishlist.find(p => p.id === productId);
     if (product) {
       addToQuote(product);
-      removeFromWishlist(productId); // ✅ remove this single product
+      removeFromWishlist(productId);
     }
   };
 
@@ -36,10 +36,11 @@ const WishlistPage: React.FC = () => {
             Your Wishlist
           </h1>
           <p className="text-xl text-stone-600 max-w-2xl mx-auto">
-            {wishlist.length > 0 
-              ? `You have ${wishlist.length} beautiful ${wishlist.length === 1 ? 'piece' : 'pieces'} saved for later`
-              : 'Your collection of favorite pieces will appear here'
-            }
+            {wishlist.length > 0
+              ? `You have ${wishlist.length} beautiful ${
+                  wishlist.length === 1 ? 'piece' : 'pieces'
+                } saved for later`
+              : 'Your collection of favorite pieces will appear here'}
           </p>
         </div>
 
@@ -70,10 +71,9 @@ const WishlistPage: React.FC = () => {
 
             {/* Products Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {wishlist.map((product) => (
+              {wishlist.map(product => (
                 <div key={product.id} className="relative">
                   <ProductCard product={product} />
-                  {/* Move to Quote Button */}
                   <button
                     onClick={() => handleMoveToQuote(product.id)}
                     className="absolute top-4 right-4 bg-amber-600 text-white px-3 py-1 rounded-md text-sm hover:bg-amber-700 shadow"
@@ -88,9 +88,7 @@ const WishlistPage: React.FC = () => {
           /* Empty State */
           <div className="text-center py-16">
             <div className="text-stone-300 text-8xl mb-8">💝</div>
-            <h3 className="text-2xl font-semibold text-stone-800 mb-4">
-              Your wishlist is empty
-            </h3>
+            <h3 className="text-2xl font-semibold text-stone-800 mb-4">Your wishlist is empty</h3>
             <p className="text-stone-600 mb-8 max-w-md mx-auto">
               Start exploring our collections and save your favorite pieces to build your perfect wishlist.
             </p>
@@ -119,9 +117,7 @@ const WishlistPage: React.FC = () => {
               <h3 className="text-2xl font-serif font-bold text-stone-800 mb-4">
                 You Might Also Like
               </h3>
-              <p className="text-stone-600">
-                Discover more beautiful pieces from our collections
-              </p>
+              <p className="text-stone-600">Discover more beautiful pieces from our collections</p>
             </div>
             <div className="text-center">
               <Link

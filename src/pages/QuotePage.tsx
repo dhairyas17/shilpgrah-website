@@ -22,10 +22,9 @@ const QuotePage: React.FC = () => {
             Your Quote Request
           </h1>
           <p className="text-xl text-stone-600 max-w-2xl mx-auto">
-            {quoteItems.length > 0 
+            {quoteItems.length > 0
               ? `You have ${getTotalItems()} ${getTotalItems() === 1 ? 'item' : 'items'} ready for quotation`
-              : 'Add products to get a personalized quote from our team'
-            }
+              : 'Add products to get a personalized quote from our team'}
           </p>
         </div>
 
@@ -33,7 +32,7 @@ const QuotePage: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             {/* Quote Items */}
             <div className="lg:col-span-2 space-y-6">
-              {quoteItems.map((item) => (
+              {quoteItems.map(item => (
                 <div key={item.product.id} className="bg-white p-6 rounded-lg shadow-md">
                   <div className="flex flex-col md:flex-row gap-6">
                     {/* Product Image */}
@@ -51,9 +50,7 @@ const QuotePage: React.FC = () => {
                         <h3 className="text-xl font-semibold text-stone-800 mb-2">
                           {item.product.name}
                         </h3>
-                        <p className="text-stone-600 mb-2">
-                          {item.product.shortDescription}
-                        </p>
+                        <p className="text-stone-600 mb-2">{item.product.shortDescription}</p>
                         <div className="flex items-center space-x-4 text-sm text-stone-500">
                           <span>{item.product.material}</span>
                           <span>•</span>
@@ -72,9 +69,7 @@ const QuotePage: React.FC = () => {
                             >
                               <Minus className="w-4 h-4" />
                             </button>
-                            <span className="w-12 text-center font-medium">
-                              {item.quantity}
-                            </span>
+                            <span className="w-12 text-center font-medium">{item.quantity}</span>
                             <button
                               onClick={() => handleQuantityChange(item.product.id, item.quantity + 1)}
                               className="p-1 rounded-full bg-stone-100 hover:bg-stone-200 transition-colors"
@@ -109,9 +104,7 @@ const QuotePage: React.FC = () => {
             {/* Quote Summary */}
             <div className="lg:col-span-1">
               <div className="bg-white p-6 rounded-lg shadow-md sticky top-24">
-                <h3 className="text-xl font-semibold text-stone-800 mb-6">
-                  Quote Summary
-                </h3>
+                <h3 className="text-xl font-semibold text-stone-800 mb-6">Quote Summary</h3>
 
                 <div className="space-y-4 mb-6">
                   <div className="flex justify-between">
@@ -125,9 +118,7 @@ const QuotePage: React.FC = () => {
                 </div>
 
                 <div className="border-t border-stone-200 pt-4 mb-6">
-                  <p className="text-sm text-stone-600 mb-4">
-                    Our team will provide you with:
-                  </p>
+                  <p className="text-sm text-stone-600 mb-4">Our team will provide you with:</p>
                   <ul className="text-sm text-stone-600 space-y-2">
                     <li className="flex items-start space-x-2">
                       <div className="w-1.5 h-1.5 bg-amber-500 rounded-full mt-2 flex-shrink-0"></div>
@@ -162,9 +153,7 @@ const QuotePage: React.FC = () => {
           /* Empty State */
           <div className="text-center py-16">
             <div className="text-stone-300 text-8xl mb-8">🛒</div>
-            <h3 className="text-2xl font-semibold text-stone-800 mb-4">
-              Your quote request is empty
-            </h3>
+            <h3 className="text-2xl font-semibold text-stone-800 mb-4">Your quote request is empty</h3>
             <p className="text-stone-600 mb-8 max-w-md mx-auto">
               Browse our collections and add products to get a personalized quote from our export team.
             </p>

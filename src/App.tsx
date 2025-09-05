@@ -14,9 +14,9 @@ import QuoteRequestPage from './pages/QuoteRequestPage';
 
 function App() {
   return (
-    <WishlistProvider>
-      <QuoteProvider>
-        <Router>
+    <Router>
+      <WishlistProvider>
+        <QuoteProvider>
           <div className="min-h-screen bg-stone-50">
             <Header />
             <main>
@@ -33,9 +33,9 @@ function App() {
             </main>
             <Footer />
           </div>
-        </Router>
-      </QuoteProvider>
-    </WishlistProvider>
+        </QuoteProvider>
+      </WishlistProvider>
+    </Router>
   );
 }
 
