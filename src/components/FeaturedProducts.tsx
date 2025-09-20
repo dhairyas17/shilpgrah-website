@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -7,10 +7,21 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 
 import ProductCard from './ProductCard';
+import ProductModal from './ProductModal';
 import { getFeaturedProducts } from '../data/products';
+import { Product } from '../types/Product';
 
 const FeaturedProducts: React.FC = () => {
   const featuredProducts = getFeaturedProducts().slice(0, 9);
+
+  // 🔑 Lift modal state here
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleProductClick = (product: Product) => {
+    setSelectedProduct(product);
+    setIsModalOpen(true);
+  };
 
   return (
     <section className="py-16 lg:py-24 bg-white">
@@ -44,7 +55,10 @@ const FeaturedProducts: React.FC = () => {
         >
           {featuredProducts.map((product) => (
             <SwiperSlide key={product.id}>
-              <ProductCard product={product} />
+              {/* Wrap ProductCard in clickable div */}
+              <div onClick={() => handleProductClick(product)} className="cursor-pointer">
+                <ProductCard product={product} />
+              </div>
             </SwiperSlide>
           ))}
         </Swiper>
@@ -60,6 +74,15 @@ const FeaturedProducts: React.FC = () => {
           </Link>
         </div>
       </div>
+
+      {/* ✅ Global Product Modal */}
+      {selectedProduct && (
+        <ProductModal
+          product={selectedProduct}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
     </section>
   );
 };

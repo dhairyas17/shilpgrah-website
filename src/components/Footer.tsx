@@ -84,8 +84,6 @@ const Footer: React.FC = () => {
               © 2024 Shilpgrah. All rights reserved.
             </div>
             <div className="flex items-center space-x-6 text-xs text-stone-400">
-              <span>Global Export License: XXXXXXX</span>
-              <span>ISO 9001:2015 Certified</span>
               <span>Handicrafts Export Council Member</span>
             </div>
           </div>

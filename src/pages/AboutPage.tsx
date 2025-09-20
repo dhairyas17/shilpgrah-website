@@ -261,7 +261,7 @@ const AboutPage: React.FC = () => {
               href="/shop"
               className="bg-amber-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-amber-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
             >
-              Browse Our Collection
+              Shop Now
             </a>
             <a
               href="/contact"

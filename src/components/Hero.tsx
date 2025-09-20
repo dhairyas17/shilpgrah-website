@@ -45,7 +45,7 @@ const Hero: React.FC = () => {
               to="/shop"
               className="group inline-flex items-center space-x-2 bg-amber-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-amber-700 transition-all duration-300 transform hover:scale-105 shadow-xl"
             >
-              <span>Explore Collection</span>
+              <span>Shop Now</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link

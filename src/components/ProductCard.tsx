@@ -5,10 +5,11 @@ import { useWishlist } from '../contexts/WishlistContext';
 import { useQuote } from '../contexts/QuoteContext';
 import ProductModal from './ProductModal';
 
+
 interface ProductCardProps {
   product: Product;
+  showHoverActions?: boolean; // 👈 toggle hover actions
 }
-
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
