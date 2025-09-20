@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heart, ShoppingBag, ArrowRight } from 'lucide-react';
+import { Heart, ShoppingBag, ArrowRight, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useWishlist } from '../contexts/WishlistContext';
 import { useQuote } from '../contexts/QuoteContext';
@@ -72,14 +72,30 @@ const WishlistPage: React.FC = () => {
             {/* Products Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {wishlist.map(product => (
-                <div key={product.id} className="relative">
+                <div
+                  key={product.id}
+                  className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col"
+                >
+                  {/* Product Card Content */}
                   <ProductCard product={product} />
-                  <button
-                    onClick={() => handleMoveToQuote(product.id)}
-                    className="absolute top-4 right-4 bg-amber-600 text-white px-3 py-1 rounded-md text-sm hover:bg-amber-700 shadow"
-                  >
-                    Move to Quote
-                  </button>
+
+                  {/* Action Buttons inside card */}
+                  <div className="flex items-center justify-between px-4 py-3 border-t border-stone-200">
+                    <button
+                      onClick={() => removeFromWishlist(product.id)}
+                      className="flex items-center space-x-1 px-3 py-2 text-sm text-red-600 bg-red-50 rounded-md hover:bg-red-100 transition-colors"
+                    >
+                      <X className="w-4 h-4" />
+                      <span>Remove</span>
+                    </button>
+                    <button
+                      onClick={() => handleMoveToQuote(product.id)}
+                      className="flex items-center space-x-1 px-3 py-2 text-sm bg-amber-600 text-white rounded-md hover:bg-amber-700 transition-colors"
+                    >
+                      <ShoppingBag className="w-4 h-4" />
+                      <span>Add to Quote</span>
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
