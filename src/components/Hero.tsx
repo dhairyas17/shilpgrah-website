@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArrowRight, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import backgroundImage from '../../assets/background.png';
+import backgroundImage from '../../public/assets/background.png';
 
 const Hero: React.FC = () => {
   return (
