@@ -93,7 +93,7 @@ const Testimonials: React.FC = () => {
         <div className="mt-16 pt-16 border-t border-stone-200">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center opacity-60">
             <div className="text-center">
-              <div className="text-2xl font-bold text-stone-800 mb-1">4.9/5</div>
+              <div className="text-2xl font-bold text-stone-800 mb-1">4.8/5</div>
               <div className="text-sm text-stone-600">Customer Rating</div>
             </div>
             <div className="text-center">
@@ -101,11 +101,11 @@ const Testimonials: React.FC = () => {
               <div className="text-sm text-stone-600">On-Time Delivery</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-stone-800 mb-1">50+</div>
+              <div className="text-2xl font-bold text-stone-800 mb-1">13+</div>
               <div className="text-sm text-stone-600">Countries Served</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-stone-800 mb-1">1000+</div>
+              <div className="text-2xl font-bold text-stone-800 mb-1">500+</div>
               <div className="text-sm text-stone-600">Happy Customers</div>
             </div>
           </div>

@@ -42,6 +42,8 @@ const ContactPage: React.FC = () => {
       title: 'Visit Our Showroom',
       details: [
         'Shilpgrah Handicrafts',
+        'Plot No 12A, Khasra NO 93',
+        "Main Salawas Road, Jodhpur (Rajasthan, India)",
         'Jodhpur, Rajasthan, India',
         '342001'
       ]
@@ -50,8 +52,8 @@ const ContactPage: React.FC = () => {
       icon: <Phone className="w-6 h-6" />,
       title: 'Call Us',
       details: [
-        '+91 291 XXX XXXX',
-        '+91 98XXX XXXXX (WhatsApp)',
+        '+91 7014318581',
+        '+91 9079323259 (WhatsApp)',
         'Mon-Sat: 9:00 AM - 7:00 PM IST'
       ]
     },
@@ -59,8 +61,8 @@ const ContactPage: React.FC = () => {
       icon: <Mail className="w-6 h-6" />,
       title: 'Email Us',
       details: [
-        'export@shilpgrah.com',
         'info@shilpgrah.com',
+        'mihir@shilpgrah.com',
         'Response within 24 hours'
       ]
     },
@@ -103,24 +105,6 @@ const ContactPage: React.FC = () => {
             viewBox="0 0 100 100"
             preserveAspectRatio="xMidYMid slice"
           >
-            <defs>
-              <pattern
-                id="contact-pattern"
-                x="0"
-                y="0"
-                width="20"
-                height="20"
-                patternUnits="userSpaceOnUse"
-              >
-                <circle cx="10" cy="10" r="2" fill="currentColor" />
-                <path
-                  d="M10,5 L15,10 L10,15 L5,10 Z"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="0.5"
-                />
-              </pattern>
-            </defs>
             <rect width="100%" height="100%" fill="url(#contact-pattern)" />
           </svg>
         </div>
@@ -287,32 +271,6 @@ const ContactPage: React.FC = () => {
                   ))}
                 </div>
               </div>
-
-              {/* Services */}
-              <div>
-                <h3 className="text-2xl font-serif font-bold text-stone-800 mb-6">
-                  Our Services
-                </h3>
-                <div className="space-y-4">
-                  {services.map((service, index) => (
-                    <div key={index} className="bg-white p-6 rounded-xl shadow-md">
-                      <div className="flex items-start space-x-4">
-                        <div className="w-12 h-12 bg-amber-100 text-amber-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                          {service.icon}
-                        </div>
-                        <div>
-                          <h4 className="text-lg font-semibold text-stone-800 mb-2">
-                            {service.title}
-                          </h4>
-                          <p className="text-stone-600 text-sm leading-relaxed">
-                            {service.description}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -341,50 +299,6 @@ const ContactPage: React.FC = () => {
               <MapPin className="w-5 h-5" />
               <span>Jodhpur, Rajasthan, India - 342001</span>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="py-16 bg-stone-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-serif font-bold text-stone-800 mb-4">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-xl text-stone-600">
-              Quick answers to common questions about our products and services
-            </p>
-          </div>
-
-          <div className="space-y-6">
-            {[
-              {
-                question: "Do you ship internationally?",
-                answer: "Yes, we ship to over 50 countries worldwide. We handle all customs documentation and provide tracking information for your shipment."
-              },
-              {
-                question: "Can you create custom pieces?",
-                answer: "Absolutely! We specialize in custom designs. Our artisans can create bespoke pieces based on your specifications, maintaining authentic Rajasthani craftsmanship."
-              },
-              {
-                question: "What is your typical delivery time?",
-                answer: "Delivery times vary by location and shipping method. Sea freight takes 4-6 weeks, air freight 1-2 weeks, and express courier 3-5 days."
-              },
-              {
-                question: "Do you offer bulk discounts?",
-                answer: "Yes, we offer competitive pricing for bulk orders. Contact us with your requirements for a personalized quote."
-              }
-            ].map((faq, index) => (
-              <div key={index} className="bg-white p-6 rounded-lg shadow-md">
-                <h3 className="text-lg font-semibold text-stone-800 mb-3">
-                  {faq.question}
-                </h3>
-                <p className="text-stone-600 leading-relaxed">
-                  {faq.answer}
-                </p>
-              </div>
-            ))}
           </div>
         </div>
       </section>

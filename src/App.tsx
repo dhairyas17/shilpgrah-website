@@ -9,6 +9,7 @@ import ShopPage from './pages/ShopPage';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import WishlistPage from './pages/WishlistPage';
+import GalleryPage from './pages/GalleryPage';
 import QuotePage from './pages/QuotePage';
 import QuoteRequestPage from './pages/QuoteRequestPage';
 
@@ -27,6 +28,7 @@ function App() {
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/contact" element={<ContactPage />} />
                 <Route path="/wishlist" element={<WishlistPage />} />
+                <Route path="/gallery" element={<GalleryPage />} />
                 <Route path="/quote" element={<QuotePage />} />
                 <Route path="/quote-request" element={<QuoteRequestPage />} />
               </Routes>

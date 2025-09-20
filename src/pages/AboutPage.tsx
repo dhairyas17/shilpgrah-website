@@ -44,12 +44,10 @@ const AboutPage: React.FC = () => {
   ];
 
   const milestones = [
-    { year: '1985', event: 'Founded in Jodhpur, Rajasthan' },
-    { year: '1992', event: 'First international export to Europe' },
-    { year: '2000', event: 'Expanded to 25+ countries' },
-    { year: '2010', event: 'Launched online presence' },
-    { year: '2020', event: 'Reached 50+ countries worldwide' },
-    { year: '2024', event: 'Over 1000 satisfied customers globally' }
+    { year: '2013', event: 'Founded in Jodhpur, Rajasthan' },
+    { year: '2018', event: 'Launched online presence' },
+    { year: '2020', event: 'First international export to Europe' },
+    { year: '2024', event: 'Reached 20+ countries worldwide' }
   ];
 
   return (
@@ -62,24 +60,6 @@ const AboutPage: React.FC = () => {
             viewBox="0 0 100 100"
             preserveAspectRatio="xMidYMid slice"
           >
-            <defs>
-              <pattern
-                id="about-pattern"
-                x="0"
-                y="0"
-                width="20"
-                height="20"
-                patternUnits="userSpaceOnUse"
-              >
-                <circle cx="10" cy="10" r="2" fill="currentColor" />
-                <path
-                  d="M10,5 L15,10 L10,15 L5,10 Z"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="0.5"
-                />
-              </pattern>
-            </defs>
             <rect width="100%" height="100%" fill="url(#about-pattern)" />
           </svg>
         </div>
@@ -248,19 +228,19 @@ const AboutPage: React.FC = () => {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-white mb-2">39+</div>
+              <div className="text-4xl md:text-5xl font-bold text-white mb-2">12+</div>
               <div className="text-amber-100">Years of Excellence</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-white mb-2">50+</div>
+              <div className="text-4xl md:text-5xl font-bold text-white mb-2">13+</div>
               <div className="text-amber-100">Countries Served</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-white mb-2">1000+</div>
+              <div className="text-4xl md:text-5xl font-bold text-white mb-2">500+</div>
               <div className="text-amber-100">Happy Customers</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-white mb-2">500+</div>
+              <div className="text-4xl md:text-5xl font-bold text-white mb-2">300+</div>
               <div className="text-amber-100">Unique Products</div>
             </div>
           </div>

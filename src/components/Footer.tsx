@@ -64,11 +64,12 @@ const Footer: React.FC = () => {
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="w-4 h-4 text-amber-400 flex-shrink-0" />
-                <span className="text-stone-300">+91 291 XXX XXXX</span>
+                <span className="text-stone-300">+91 7014318581</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="w-4 h-4 text-amber-400 flex-shrink-0" />
-                <span className="text-stone-300">export@shilpgrah.com</span>
+                <span className="text-stone-300">info@shilpgrah.com</span>
+                <span className="text-stone-300">mihir@shilpgrah.com</span>
               </div>
             </div>
           </div>
