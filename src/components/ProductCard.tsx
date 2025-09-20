@@ -101,12 +101,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               <span className="mx-2">•</span>
               <span>{product.finish}</span>
             </div>
-            <div className="text-right">
+            {/* <div className="text-right">
               <div className="text-lg font-bold text-amber-600">
                 ${product.priceRange.min} - ${product.priceRange.max}
               </div>
               <div className="text-xs text-stone-500">USD</div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

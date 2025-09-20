@@ -82,14 +82,14 @@ const FeaturedProductModal: React.FC<FeaturedProductModalProps> = ({ product, is
             </div>
 
             {/* Price Range */}
-            <div className="bg-amber-50 p-4 rounded-lg">
+            {/* <div className="bg-amber-50 p-4 rounded-lg">
               <div className="text-2xl font-bold text-amber-600">
                 ${product.priceRange.min} - ${product.priceRange.max} USD
               </div>
               <div className="text-sm text-stone-600 mt-1">
                 Price varies based on customization and quantity
               </div>
-            </div>
+            </div> */}
 
             {/* Specifications */}
             <div className="space-y-4">

@@ -80,12 +80,12 @@ const QuotePage: React.FC = () => {
                         </div>
 
                         {/* Price Range */}
-                        <div className="text-right">
+                        {/* <div className="text-right">
                           <div className="text-lg font-bold text-amber-600">
                             ${item.product.priceRange.min} - ${item.product.priceRange.max}
                           </div>
                           <div className="text-xs text-stone-500">per unit</div>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
 

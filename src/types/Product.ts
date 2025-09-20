@@ -14,11 +14,6 @@ export interface Product {
     height: number;
     unit: string;
   };
-  priceRange: {
-    min: number;
-    max: number;
-    currency: string;
-  };
   featured: boolean;
   tags: string[];
 }
