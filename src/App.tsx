@@ -5,6 +5,7 @@ import { QuoteProvider } from './contexts/QuoteContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
+import WhatsAppButton from './components/WhatsAppButton';
 import HomePage from './pages/HomePage';
 import ShopPage from './pages/ShopPage';
 import AboutPage from './pages/AboutPage';
@@ -39,6 +40,7 @@ function App() {
               </Routes>
             </main>
             <Footer />
+            <WhatsAppButton />
           </div>
         </QuoteProvider>
       </WishlistProvider>

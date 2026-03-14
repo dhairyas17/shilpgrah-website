@@ -1,143 +1,162 @@
 import React from 'react';
-import { Mail, Phone, MapPin, Facebook, Instagram, Twitter, Linkedin } from 'lucide-react';
+import { Mail, Phone, MapPin, Facebook, Instagram, Twitter, Linkedin, FileDown } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-stone-900 text-stone-100">
-      {/* Main Footer */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Company Info */}
-          <div className="space-y-4">
-            <h3 className="text-2xl font-serif font-bold text-amber-400">Shilpgrah</h3>
-            <p className="text-stone-300 text-sm leading-relaxed">
+    <footer style={{ background: '#1c1410', color: '#e7e5e4' }}>
+
+      {/* Amber top accent line */}
+      <div style={{ height: '3px', background: 'linear-gradient(90deg, transparent 0%, #d97706 30%, #fbbf24 70%, transparent 100%)' }} />
+
+      {/* ── MAIN FOOTER — full width with internal padding ── */}
+      <div style={{ padding: '4rem 5vw 3rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr 1fr 1.2fr', gap: '3rem', maxWidth: '1400px', margin: '0 auto' }}>
+
+          {/* ── Company Info ── */}
+          <div>
+            <h3 style={{ fontSize: '1.6rem', fontFamily: 'Georgia, serif', fontWeight: 700, color: '#fbbf24', marginBottom: '1rem', lineHeight: 1 }}>
+              Shilpgrah
+            </h3>
+            <p style={{ color: '#a8a29e', fontSize: '0.82rem', lineHeight: 1.85, marginBottom: '1.25rem', fontFamily: 'system-ui, sans-serif', maxWidth: '280px' }}>
               Exporting the finest Rajasthani handicrafts to the world. Our artisans create masterpieces that carry the heritage and soul of Rajasthan.
             </p>
-            <div className="flex space-x-4">
-              <a href="#" className="text-stone-400 hover:text-amber-400 transition-colors">
-                <Facebook className="w-5 h-5" />
-              </a>
-              <a href="#" className="text-stone-400 hover:text-amber-400 transition-colors">
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a href="#" className="text-stone-400 hover:text-amber-400 transition-colors">
-                <Twitter className="w-5 h-5" />
-              </a>
-              <a href="#" className="text-stone-400 hover:text-amber-400 transition-colors">
-                <Linkedin className="w-5 h-5" />
-              </a>
+            {/* Social icons */}
+            <div style={{ display: 'flex', gap: '0.75rem' }}>
+              {[
+                { href: '#', Icon: Facebook },
+                { href: '#', Icon: Instagram },
+                { href: '#', Icon: Twitter },
+                { href: '#', Icon: Linkedin },
+              ].map(({ href, Icon }, i) => (
+                <a key={i} href={href}
+                  style={{ width: '2.2rem', height: '2.2rem', borderRadius: '8px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#a8a29e', textDecoration: 'none', transition: 'all 0.2s' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(217,119,6,0.2)'; (e.currentTarget as HTMLElement).style.color = '#fbbf24'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(217,119,6,0.4)'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.06)'; (e.currentTarget as HTMLElement).style.color = '#a8a29e'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.1)'; }}
+                >
+                  <Icon style={{ width: '0.9rem', height: '0.9rem' }} />
+                </a>
+              ))}
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div className="space-y-4">
-            <h4 className="text-lg font-semibold text-white">Quick Links</h4>
-            <ul className="space-y-2 text-sm">
-              <li><a href="/" className="text-stone-300 hover:text-amber-400 transition-colors">Home</a></li>
-              <li><a href="/shop" className="text-stone-300 hover:text-amber-400 transition-colors">Shop</a></li>
-              <li><a href="/collections" className="text-stone-300 hover:text-amber-400 transition-colors">Collections</a></li>
-              <li><a href="#about" className="text-stone-300 hover:text-amber-400 transition-colors">About Us</a></li>
-              <li><a href="/quote-request" className="text-stone-300 hover:text-amber-400 transition-colors">Get Quote</a></li>
+          {/* ── Quick Links ── */}
+          <div>
+            <h4 style={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#fbbf24', marginBottom: '1.25rem', fontFamily: 'system-ui, sans-serif' }}>
+              Quick Links
+            </h4>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+              {[
+                { label: 'Home',         to: '/' },
+                { label: 'Products',     to: '/shop' },
+                { label: 'Collections',  to: '/collection' },
+                { label: 'About Us',     to: '/about' },
+                { label: 'Gallery',      to: '/gallery' },
+                { label: 'Get a Quote',  to: '/quote-request' },
+                { label: 'Contact',      to: '/contact' },
+              ].map(({ label, to }) => (
+                <li key={to}>
+                  <Link to={to}
+                    style={{ color: '#a8a29e', textDecoration: 'none', fontSize: '0.82rem', fontFamily: 'system-ui, sans-serif', transition: 'color 0.15s', display: 'flex', alignItems: 'center', gap: '6px' }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#fbbf24'; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = '#a8a29e'; }}
+                  >
+                    <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#d97706', flexShrink: 0, display: 'inline-block' }} />
+                    {label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Product Catalogue */}
-          <div className="space-y-4">
-            <h4 className="text-lg font-semibold text-white">Product Catalogue</h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <a
-                  href="/catalogues/furniture.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-stone-300 hover:text-amber-400 transition-colors"
+          {/* ── Catalogues ── */}
+          <div>
+            <h4 style={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#fbbf24', marginBottom: '1.25rem', fontFamily: 'system-ui, sans-serif' }}>
+              Catalogues
+            </h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              {[
+                { label: 'Rajasthan Furniture Catalogue', file: '/assets/Rajasthan-catalogue.pdf' },
+                { label: 'Export Collection 2024',        file: '/assets/Furniture-catalog.pdf' },
+                { label: 'Export Collection 2025',        file: '/assets/Furniture-catalog.pdf' },
+              ].map(({ label, file }) => (
+                <a key={label} href={file} target="_blank" rel="noopener noreferrer"
+                  style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', padding: '0.7rem 0.85rem', borderRadius: '8px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', textDecoration: 'none', transition: 'all 0.2s' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(217,119,6,0.12)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(217,119,6,0.3)'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.04)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.08)'; }}
                 >
-                  Furniture Catalogue
+                  <div style={{ width: '2rem', height: '2rem', borderRadius: '6px', background: 'rgba(217,119,6,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <FileDown style={{ width: '0.85rem', height: '0.85rem', color: '#fbbf24' }} />
+                  </div>
+                  <div>
+                    <p style={{ fontSize: '0.75rem', fontWeight: 600, color: '#e7e5e4', fontFamily: 'system-ui, sans-serif', margin: 0, lineHeight: 1.3 }}>{label}</p>
+                    <p style={{ fontSize: '0.62rem', color: '#78716c', fontFamily: 'system-ui, sans-serif', margin: 0 }}>PDF Download</p>
+                  </div>
                 </a>
-              </li>
-              <li>
-                <a
-                  href="/catalogues/decor.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-stone-300 hover:text-amber-400 transition-colors"
-                >
-                  Home Decor Catalogue
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/catalogues/textiles.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-stone-300 hover:text-amber-400 transition-colors"
-                >
-                  Textile Catalogue
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/catalogues/lighting.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-stone-300 hover:text-amber-400 transition-colors"
-                >
-                  Lighting Catalogue
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/catalogues/mirrorwork.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-stone-300 hover:text-amber-400 transition-colors"
-                >
-                  Mirror Work Catalogue
-                </a>
-              </li>
-            </ul>
+              ))}
+            </div>
           </div>
 
-          {/* Contact Info */}
-          <div className="space-y-4">
-            <h4 className="text-lg font-semibold text-white">Contact Us</h4>
-            <div className="space-y-3 text-sm">
-              <div className="flex items-start space-x-3">
-                <MapPin className="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" />
-                <span className="text-stone-300">
-                  Jodhpur, Rajasthan, India<br />
-                  342001
+          {/* ── Contact ── */}
+          <div>
+            <h4 style={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#fbbf24', marginBottom: '1.25rem', fontFamily: 'system-ui, sans-serif' }}>
+              Contact Us
+            </h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
+                <MapPin style={{ width: '1rem', height: '1rem', color: '#d97706', flexShrink: 0, marginTop: '2px' }} />
+                <span style={{ color: '#a8a29e', fontSize: '0.8rem', lineHeight: 1.65, fontFamily: 'system-ui, sans-serif' }}>
+                  Plot No 12A, Khasra NO 93,<br />
+                  Main Salawas Road,<br />
+                  Jodhpur, Rajasthan 342001
                 </span>
               </div>
-              <div className="flex items-center space-x-3">
-                <Phone className="w-4 h-4 text-amber-400 flex-shrink-0" />
-                <span className="text-stone-300">+91 7014318581</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <Phone style={{ width: '1rem', height: '1rem', color: '#d97706', flexShrink: 0 }} />
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                  <a href="tel:+917014318581" style={{ color: '#a8a29e', fontSize: '0.8rem', textDecoration: 'none', fontFamily: 'system-ui, sans-serif', transition: 'color 0.15s' }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#fbbf24'; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = '#a8a29e'; }}>
+                    +91 7014318581
+                  </a>
+                  <a href="tel:+919079323259" style={{ color: '#a8a29e', fontSize: '0.8rem', textDecoration: 'none', fontFamily: 'system-ui, sans-serif', transition: 'color 0.15s' }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#fbbf24'; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = '#a8a29e'; }}>
+                    +91 9079323259
+                  </a>
+                </div>
               </div>
-              <div className="flex items-start space-x-3">
-                <Mail className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
-                <div className="flex flex-col">
-                  <span className="text-stone-300">info@shilpgrah.com</span>
-                  <span className="text-stone-300">mihir@shilpgrah.com</span>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
+                <Mail style={{ width: '1rem', height: '1rem', color: '#d97706', flexShrink: 0, marginTop: '2px' }} />
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                  {['info@shilpgrah.com', 'mihir@shilpgrah.com'].map(email => (
+                    <a key={email} href={`mailto:${email}`}
+                      style={{ color: '#a8a29e', fontSize: '0.8rem', textDecoration: 'none', fontFamily: 'system-ui, sans-serif', transition: 'color 0.15s' }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#fbbf24'; }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = '#a8a29e'; }}>
+                      {email}
+                    </a>
+                  ))}
                 </div>
               </div>
             </div>
           </div>
+
         </div>
       </div>
 
-      {/* Bottom Footer */}
-      <div className="border-t border-stone-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <div className="text-sm text-stone-400">
-              © 2014 Shilpgrah. All rights reserved.
-            </div>
-            <div className="flex items-center space-x-6 text-xs text-stone-400">
-              <span>Handicrafts Export Council Member</span>
-            </div>
-          </div>
+      {/* ── Bottom bar ── */}
+      <div style={{ borderTop: '1px solid rgba(255,255,255,0.07)', padding: '1.25rem 5vw' }}>
+        <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '0.75rem' }}>
+          <p style={{ fontSize: '0.75rem', color: '#57534e', fontFamily: 'system-ui, sans-serif', margin: 0 }}>
+            © {new Date().getFullYear()} Shilpgrah. All rights reserved.
+          </p>
+          <p style={{ fontSize: '0.72rem', color: '#57534e', fontFamily: 'system-ui, sans-serif', margin: 0 }}>
+            Handicrafts Export Council Member · Jodhpur, Rajasthan, India
+          </p>
         </div>
       </div>
+
     </footer>
   );
 };
