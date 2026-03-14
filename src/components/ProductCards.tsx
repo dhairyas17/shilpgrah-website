@@ -5,118 +5,189 @@ import { useWishlist } from '../contexts/WishlistContext';
 import { useQuote } from '../contexts/QuoteContext';
 import ProductModal from './ProductModal';
 
-
-interface ProductCardProps {
-  product: Product;
-  showHoverActions?: boolean; // 👈 toggle hover actions
-}
-const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const { addToQuote } = useQuote();
-
-  const handleWishlistToggle = (e: React.MouseEvent) => {
-    e.stopPropagation(); // ✅ prevent card click
-    if (isInWishlist(product.id)) {
-      removeFromWishlist(product.id);
-    } else {
-      addToWishlist(product);
-    }
-  };
-
-  const handleAddToQuote = (e: React.MouseEvent) => {
-    e.stopPropagation(); // ✅ prevent card click
-    addToQuote(product);
-  };
-
-  const handleQuickView = (e: React.MouseEvent) => {
-    e.stopPropagation(); // ✅ prevent card click
-    setIsModalOpen(true);
-  };
+  const wishlisted = isInWishlist(product.id);
 
   return (
     <>
       <div
-        className="group relative bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
+        className="group relative bg-white overflow-hidden cursor-pointer"
+        style={{
+          boxShadow: isHovered
+            ? '0 24px 48px rgba(120, 90, 40, 0.13), 0 4px 12px rgba(0,0,0,0.07)'
+            : '0 2px 12px rgba(0,0,0,0.06)',
+          transform: isHovered ? 'translateY(-4px)' : 'translateY(0)',
+          transition: 'box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1)',
+          borderRadius: '2px',
+        }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        onClick={() => setIsModalOpen(true)} 
+        onClick={() => setIsModalOpen(true)}
       >
-        {/* Image */}
-        <div className="relative aspect-[4/3] overflow-hidden">
+        {/* ── IMAGE ── */}
+        <div className="relative overflow-hidden bg-stone-100" style={{ aspectRatio: '4/3' }}>
           <img
             src={product.images[0]}
             alt={product.name}
             loading="lazy"
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            className="w-full h-full object-cover"
+            style={{
+              transform: isHovered ? 'scale(1.06)' : 'scale(1)',
+              transition: 'transform 0.7s cubic-bezier(0.16,1,0.3,1)',
+            }}
           />
-          
-          {/* Overlay */}
-          <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          
-          {/* Action Buttons */}
+
+          {/* Veil */}
           <div
-            className={`absolute bottom-4 left-4 right-4 flex justify-center space-x-2 transition-all duration-300 ${
-              isHovered ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
-            }`}
+            className="absolute inset-0"
+            style={{
+              background: 'linear-gradient(to bottom, transparent 35%, rgba(28,20,10,0.55) 100%)',
+              opacity: isHovered ? 1 : 0,
+              transition: 'opacity 0.35s ease',
+            }}
+          />
+
+          {/* Bestseller tag */}
+          {product.isBestSeller && (
+            <div
+              className="absolute top-3 left-3 text-white text-xs font-medium tracking-widest uppercase px-2.5 py-1"
+              style={{ background: '#b45309', fontSize: '0.6rem', letterSpacing: '0.15em' }}
+            >
+              Bestseller
+            </div>
+          )}
+
+          {/* Wishlist — always visible if active, fades in on hover */}
+          <button
+            onClick={(e) => { e.stopPropagation(); wishlisted ? removeFromWishlist(product.id) : addToWishlist(product); }}
+            className="absolute top-3 right-3 rounded-full transition-all duration-200 flex items-center justify-center"
+            style={{
+              width: '2.1rem', height: '2.1rem',
+              background: wishlisted ? '#ef4444' : 'rgba(255,255,255,0.88)',
+              color: wishlisted ? 'white' : '#78716c',
+              opacity: isHovered || wishlisted ? 1 : 0,
+              transform: isHovered || wishlisted ? 'scale(1)' : 'scale(0.8)',
+              transition: 'all 0.25s cubic-bezier(0.16,1,0.3,1)',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+              border: 'none',
+            }}
+          >
+            <Heart className="w-3.5 h-3.5" style={{ fill: wishlisted ? 'currentColor' : 'none', strokeWidth: 2 }} />
+          </button>
+
+          {/* Bottom action bar — slides up on hover */}
+          <div
+            className="absolute bottom-0 left-0 right-0 flex"
+            style={{
+              opacity: isHovered ? 1 : 0,
+              transform: isHovered ? 'translateY(0)' : 'translateY(100%)',
+              transition: 'all 0.35s cubic-bezier(0.16,1,0.3,1)',
+            }}
           >
             <button
-              onClick={handleQuickView}
-              className="p-3 bg-white/90 text-stone-700 rounded-full hover:bg-white hover:text-amber-600 transition-colors shadow-lg backdrop-blur-sm"
+              onClick={(e) => { e.stopPropagation(); setIsModalOpen(true); }}
+              className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-stone-800 hover:bg-amber-50 transition-colors duration-150"
+              style={{
+                background: 'rgba(255,255,255,0.95)',
+                fontSize: '0.65rem',
+                fontWeight: 500,
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                borderRight: '1px solid rgba(180,83,9,0.15)',
+                border: 'none',
+                cursor: 'pointer',
+              }}
             >
-              <Eye className="w-4 h-4" />
+              <Eye className="w-3.5 h-3.5 text-amber-700" />
+              <span>Quick View</span>
             </button>
             <button
-              onClick={handleWishlistToggle}
-              className={`p-3 rounded-full transition-colors shadow-lg ${
-                isInWishlist(product.id)
-                  ? 'bg-red-500 text-white hover:bg-red-600'
-                  : 'bg-white/90 text-stone-700 hover:bg-white hover:text-red-500 backdrop-blur-sm'
-              }`}
+              onClick={(e) => { e.stopPropagation(); addToQuote(product); }}
+              className="flex-1 flex items-center justify-center gap-1.5 py-2.5 transition-colors duration-150"
+              style={{
+                background: '#b45309',
+                color: 'white',
+                fontSize: '0.65rem',
+                fontWeight: 500,
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                border: 'none',
+                cursor: 'pointer',
+              }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = '#92400e'; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = '#b45309'; }}
             >
-              <Heart className={`w-4 h-4 ${isInWishlist(product.id) ? 'fill-current' : ''}`} />
-            </button>
-            <button
-              onClick={handleAddToQuote}
-              className="p-3 bg-amber-600 text-white rounded-full hover:bg-amber-700 transition-colors shadow-lg backdrop-blur-sm"
-            >
-              <ShoppingBag className="w-4 h-4" />
+              <ShoppingBag className="w-3.5 h-3.5" />
+              <span>Add to Quote</span>
             </button>
           </div>
         </div>
 
-        {/* Content */}
-        <div className="p-6">
-          <h3 className="text-lg font-semibold text-stone-800 mb-2 line-clamp-2">
+        {/* ── CONTENT ── */}
+        <div className="p-5">
+          {/* Title */}
+          <h3
+            className="font-serif text-stone-800 mb-1.5 line-clamp-2 leading-snug"
+            style={{ fontSize: '1.05rem', fontWeight: 600, transition: 'color 0.2s', color: isHovered ? '#92400e' : '#1c1917' }}
+          >
             {product.name}
           </h3>
-          <p className="text-stone-600 text-sm mb-3 line-clamp-2">
+
+          {/* Short desc */}
+          <p className="text-stone-500 text-sm mb-4 line-clamp-2 leading-relaxed" style={{ fontSize: '0.8rem' }}>
             {product.shortDescription}
           </p>
-          
+
+          {/* Meta row */}
           <div className="flex items-center justify-between">
-            <div className="text-sm text-stone-500">
-              <span className="font-medium">{product.material}</span>
-              <span className="mx-2">•</span>
-              <span>{product.finish}</span>
+            <div className="flex items-center gap-1.5">
+              <span
+                className="inline-block w-1.5 h-1.5 rounded-full"
+                style={{ background: '#d97706' }}
+              />
+              <span className="text-stone-500 text-xs font-medium tracking-wide">
+                {product.material}
+              </span>
+              <span className="text-stone-300 text-xs">·</span>
+              <span className="text-stone-400 text-xs">{product.finish}</span>
             </div>
-            {/* <div className="text-right">
-              <div className="text-lg font-bold text-amber-600">
-                ${product.priceRange.min} - ${product.priceRange.max}
-              </div>
-              <div className="text-xs text-stone-500">USD</div>
-            </div> */}
+
+            {/* Animated arrow */}
+            <div
+              className="flex items-center gap-1 text-amber-700 transition-all duration-300"
+              style={{
+                fontSize: '0.65rem',
+                fontWeight: 500,
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+                opacity: isHovered ? 1 : 0,
+                transform: isHovered ? 'translateX(0)' : 'translateX(-4px)',
+              }}
+            >
+              <span>Explore</span>
+              <span>→</span>
+            </div>
           </div>
+
+          {/* Bottom accent line */}
+          <div
+            className="mt-4"
+            style={{
+              height: '2px',
+              background: 'linear-gradient(90deg, #d97706, #fbbf24, transparent)',
+              transform: isHovered ? 'scaleX(1)' : 'scaleX(0)',
+              transformOrigin: 'left',
+              transition: 'transform 0.4s cubic-bezier(0.16,1,0.3,1)',
+            }}
+          />
         </div>
       </div>
 
-      {/* Product Modal */}
-      <ProductModal
-        product={product}
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
+      <ProductModal product={product} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </>
   );
 };
