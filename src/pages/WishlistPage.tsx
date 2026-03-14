@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Heart, ShoppingBag, ArrowRight, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useWishlist } from '../contexts/WishlistContext';
 import { useQuote } from '../contexts/QuoteContext';
-import ProductCard from '../components/featureModalCards';
 
 const WishlistPage: React.FC = () => {
   const { wishlist, removeFromWishlist } = useWishlist();
   const { addToQuote } = useQuote();
+  const [removingId, setRemovingId] = useState<string | null>(null);
 
   const handleAddAllToQuote = () => {
     wishlist.forEach(product => {
@@ -20,133 +20,297 @@ const WishlistPage: React.FC = () => {
     const product = wishlist.find(p => p.id === productId);
     if (product) {
       addToQuote(product);
-      removeFromWishlist(productId);
+      handleRemove(productId);
     }
   };
 
+  const handleRemove = (productId: string) => {
+    setRemovingId(productId);
+    setTimeout(() => {
+      removeFromWishlist(productId);
+      setRemovingId(null);
+    }, 300);
+  };
+
   return (
-    <div className="min-h-screen bg-stone-50 pt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-red-100 rounded-full mb-6">
-            <Heart className="w-8 h-8 text-red-500 fill-current" />
-          </div>
-          <h1 className="text-4xl md:text-5xl font-serif font-bold text-stone-800 mb-4">
+    <div className="min-h-screen bg-stone-50">
+
+      {/* ── BANNER ── */}
+      <div
+        className="relative bg-white border-b border-stone-100"
+        style={{ paddingTop: '7.5rem', paddingBottom: '3rem' }}
+      >
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{ background: 'linear-gradient(135deg, #fffbf5 0%, #fff8ef 50%, #fdfaf5 100%)' }}
+        />
+        <div
+          style={{
+            position: 'absolute', top: 0, left: 0, right: 0, height: '3px',
+            background: 'linear-gradient(90deg, transparent 0%, #d97706 30%, #fbbf24 70%, transparent 100%)',
+          }}
+        />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <p
+            className="text-amber-700 font-semibold tracking-widest uppercase mb-2"
+            style={{ fontSize: '0.65rem', letterSpacing: '0.22em' }}
+          >
+            Saved Pieces
+          </p>
+          <h1
+            className="font-serif text-stone-900 mb-3"
+            style={{ fontSize: 'clamp(2.2rem, 5vw, 3.75rem)', fontWeight: 700, lineHeight: 1.1 }}
+          >
             Your Wishlist
           </h1>
-          <p className="text-xl text-stone-600 max-w-2xl mx-auto">
+          <div
+            className="mx-auto mb-4"
+            style={{ width: '3.5rem', height: '3px', background: 'linear-gradient(90deg, #d97706, #fbbf24)', borderRadius: '2px' }}
+          />
+          <p className="text-stone-500 max-w-xl mx-auto leading-relaxed" style={{ fontSize: '0.9rem' }}>
             {wishlist.length > 0
-              ? `You have ${wishlist.length} beautiful ${
-                  wishlist.length === 1 ? 'piece' : 'pieces'
-                } saved for later`
-              : 'Your collection of favorite pieces will appear here'}
+              ? `${wishlist.length} beautiful ${wishlist.length === 1 ? 'piece' : 'pieces'} saved — move them to a quote to enquire with our export team.`
+              : 'Browse our collections and save your favourite pieces to revisit later.'}
           </p>
         </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
         {wishlist.length > 0 ? (
           <>
-            {/* Actions Bar */}
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-12 p-6 bg-white rounded-lg shadow-md">
-              <div className="text-stone-700">
-                <span className="font-semibold">{wishlist.length}</span> items in your wishlist
-              </div>
-              <div className="flex space-x-4">
-                <button
-                  onClick={handleAddAllToQuote}
-                  className="flex items-center space-x-2 bg-amber-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-amber-700 transition-colors"
-                >
-                  <ShoppingBag className="w-5 h-5" />
-                  <span>Add All to Quote</span>
-                </button>
+            {/* ── TOP ACTION BAR ── */}
+            <div
+              className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-10 px-6 py-4 bg-white"
+              style={{ borderRadius: '12px', border: '1.5px solid #f5f5f4', boxShadow: '0 2px 12px rgba(0,0,0,0.05)' }}
+            >
+              <p className="text-stone-500" style={{ fontSize: '0.85rem' }}>
+                <span className="font-bold text-stone-800" style={{ fontSize: '1rem' }}>{wishlist.length}</span>
+                {' '}{wishlist.length === 1 ? 'item' : 'items'} in your wishlist
+              </p>
+              <div className="flex items-center gap-3">
                 <Link
                   to="/quote"
-                  className="flex items-center space-x-2 bg-stone-800 text-white px-6 py-3 rounded-lg font-medium hover:bg-stone-900 transition-colors"
+                  className="inline-flex items-center gap-2 font-semibold rounded-lg transition-all duration-200"
+                  style={{ padding: '0.65rem 1.25rem', background: 'white', color: '#1c1917', fontSize: '0.82rem', textDecoration: 'none', border: '1.5px solid #e7e5e4' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#d97706'; (e.currentTarget as HTMLElement).style.color = '#d97706'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#e7e5e4'; (e.currentTarget as HTMLElement).style.color = '#1c1917'; }}
                 >
-                  <span>View Quote</span>
-                  <ArrowRight className="w-4 h-4" />
+                  View Quote <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
+                <button
+                  onClick={handleAddAllToQuote}
+                  className="inline-flex items-center gap-2 font-semibold rounded-lg transition-all duration-200"
+                  style={{ padding: '0.65rem 1.25rem', background: '#d97706', color: 'white', fontSize: '0.82rem', border: 'none', cursor: 'pointer', boxShadow: '0 4px 16px rgba(217,119,6,0.25)' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#b45309'; (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#d97706'; (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; }}
+                >
+                  <ShoppingBag className="w-3.5 h-3.5" />
+                  Add All to Quote
+                </button>
               </div>
             </div>
 
-            {/* Products Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {wishlist.map(product => (
+            {/* ── PRODUCT GRID ── */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {wishlist.map((product, i) => (
                 <div
                   key={product.id}
-                  className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col"
+                  className="group bg-white flex flex-col overflow-hidden"
+                  style={{
+                    borderRadius: '14px',
+                    border: '1.5px solid #f5f5f4',
+                    boxShadow: '0 2px 16px rgba(0,0,0,0.06)',
+                    animation: `fadeSlideUp 0.4s ease ${i * 0.07}s both`,
+                    transition: 'box-shadow 0.25s ease, transform 0.25s ease, opacity 0.3s ease',
+                    opacity: removingId === product.id ? 0 : 1,
+                    transform: removingId === product.id ? 'scale(0.95)' : undefined,
+                  }}
+                  onMouseEnter={e => {
+                    if (removingId !== product.id) {
+                      (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 32px rgba(0,0,0,0.12)';
+                      (e.currentTarget as HTMLElement).style.transform = 'translateY(-4px)';
+                    }
+                  }}
+                  onMouseLeave={e => {
+                    (e.currentTarget as HTMLElement).style.boxShadow = '0 2px 16px rgba(0,0,0,0.06)';
+                    (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
+                  }}
                 >
-                  {/* Product Card Content */}
-                  <ProductCard product={product} />
+                  {/* ── Large Thumbnail ── */}
+                  <div className="relative overflow-hidden" style={{ aspectRatio: '4/3', background: '#f5f0e8' }}>
+                    <img
+                      src={product.images[0]}
+                      alt={product.name}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
 
-                  {/* Action Buttons inside card */}
-                  <div className="flex items-center justify-between px-4 py-3 border-t border-stone-200">
+                    {/* Dark gradient on hover for bottom CTA visibility */}
+                    <div
+                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.50) 0%, rgba(0,0,0,0.1) 45%, transparent 70%)' }}
+                    />
+
+                    {/* Remove — top right */}
                     <button
-                      onClick={() => removeFromWishlist(product.id)}
-                      className="flex items-center space-x-1 px-3 py-2 text-sm text-red-600 bg-red-50 rounded-md hover:bg-red-100 transition-colors"
+                      onClick={() => handleRemove(product.id)}
+                      className="absolute top-3 right-3 flex items-center justify-center rounded-full transition-all duration-200 opacity-0 group-hover:opacity-100"
+                      style={{
+                        width: '2rem', height: '2rem',
+                        background: 'rgba(255,255,255,0.9)',
+                        border: 'none', cursor: 'pointer', color: '#78716c',
+                        backdropFilter: 'blur(6px)',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
+                      }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#ef4444'; (e.currentTarget as HTMLElement).style.background = 'white'; }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = '#78716c'; (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.9)'; }}
                     >
-                      <X className="w-4 h-4" />
-                      <span>Remove</span>
+                      <X className="w-3.5 h-3.5" />
                     </button>
-                    <button
-                      onClick={() => handleMoveToQuote(product.id)}
-                      className="flex items-center space-x-1 px-3 py-2 text-sm bg-amber-600 text-white rounded-md hover:bg-amber-700 transition-colors"
+
+                    {/* Category pill — top left */}
+                    <div
+                      className="absolute top-3 left-3"
+                      style={{
+                        padding: '0.25rem 0.7rem',
+                        background: 'rgba(255,255,255,0.9)',
+                        borderRadius: '999px',
+                        fontSize: '0.62rem',
+                        fontWeight: 700,
+                        color: '#92400e',
+                        letterSpacing: '0.1em',
+                        textTransform: 'uppercase',
+                        backdropFilter: 'blur(6px)',
+                        boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
+                      }}
                     >
-                      <ShoppingBag className="w-4 h-4" />
-                      <span>Add to Quote</span>
-                    </button>
+                      {product.category}
+                    </div>
+
+                    {/* Move to Quote CTA — slides up on hover */}
+                    <div
+                      className="absolute bottom-0 left-0 right-0 p-3 opacity-0 group-hover:opacity-100 transition-all duration-300"
+                      style={{ transform: 'translateY(6px)' }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; }}
+                    >
+                      <button
+                        onClick={() => handleMoveToQuote(product.id)}
+                        className="w-full flex items-center justify-center gap-2 font-semibold rounded-lg"
+                        style={{
+                          padding: '0.65rem',
+                          background: '#d97706',
+                          color: 'white',
+                          fontSize: '0.78rem',
+                          border: 'none',
+                          cursor: 'pointer',
+                          letterSpacing: '0.04em',
+                          boxShadow: '0 4px 20px rgba(217,119,6,0.45)',
+                          transition: 'background 0.2s',
+                        }}
+                        onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#b45309'; }}
+                        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#d97706'; }}
+                      >
+                        <ShoppingBag className="w-3.5 h-3.5" />
+                        Move to Quote
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* ── Card Body ── */}
+                  <div className="flex flex-col flex-1 p-5">
+                    <h3
+                      className="font-serif font-bold text-stone-800 mb-1.5 leading-snug"
+                      style={{ fontSize: '1.05rem' }}
+                    >
+                      {product.name}
+                    </h3>
+                    <p
+                      className="text-stone-400 mb-4 line-clamp-2 flex-1"
+                      style={{ fontSize: '0.78rem', lineHeight: 1.6 }}
+                    >
+                      {product.shortDescription}
+                    </p>
+
+                    {/* Meta + heart remove */}
+                    <div
+                      className="flex items-center justify-between pt-4"
+                      style={{ borderTop: '1px solid #f5f0e8' }}
+                    >
+                      <div className="flex items-center gap-2">
+                        <span
+                          className="inline-block w-1.5 h-1.5 rounded-full flex-shrink-0"
+                          style={{ background: '#d97706' }}
+                        />
+                        <span className="text-stone-500 font-medium" style={{ fontSize: '0.73rem' }}>{product.material}</span>
+                        <span className="text-stone-300" style={{ fontSize: '0.73rem' }}>·</span>
+                        <span className="text-stone-400" style={{ fontSize: '0.73rem' }}>{product.finish}</span>
+                      </div>
+
+                      <button
+                        onClick={() => handleRemove(product.id)}
+                        title="Remove from wishlist"
+                        className="flex items-center justify-center rounded-full transition-all duration-200"
+                        style={{ width: '2rem', height: '2rem', background: '#fef3c7', border: 'none', cursor: 'pointer', color: '#d97706' }}
+                        onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#fee2e2'; (e.currentTarget as HTMLElement).style.color = '#ef4444'; }}
+                        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#fef3c7'; (e.currentTarget as HTMLElement).style.color = '#d97706'; }}
+                      >
+                        <Heart className="w-3.5 h-3.5 fill-current" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
           </>
-        ) : (
-          /* Empty State */
-          <div className="text-center py-16">
-            <div className="text-stone-300 text-8xl mb-8">💝</div>
-            <h3 className="text-2xl font-semibold text-stone-800 mb-4">Your wishlist is empty</h3>
-            <p className="text-stone-600 mb-8 max-w-md mx-auto">
-              Start exploring our collections and save your favorite pieces to build your perfect wishlist.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-              <Link
-                to="/shop"
-                className="inline-flex items-center space-x-2 bg-amber-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-amber-700 transition-all duration-300 transform hover:scale-105"
-              >
-                <span>Explore Products</span>
-                <ArrowRight className="w-5 h-5" />
-              </Link>
-              <Link
-                to="/collections"
-                className="inline-flex items-center space-x-2 bg-white text-stone-800 px-8 py-4 rounded-lg font-semibold border border-stone-300 hover:bg-stone-50 transition-colors"
-              >
-                <span>Browse Collections</span>
-              </Link>
-            </div>
-          </div>
-        )}
 
-        {/* Recommendations */}
-        {wishlist.length > 0 && (
-          <div className="mt-16 pt-16 border-t border-stone-200">
-            <div className="text-center mb-8">
-              <h3 className="text-2xl font-serif font-bold text-stone-800 mb-4">
-                You Might Also Like
-              </h3>
-              <p className="text-stone-600">Discover more beautiful pieces from our collections</p>
+        ) : (
+
+          /* ── EMPTY STATE ── */
+          <div className="text-center py-24">
+            <div
+              className="inline-flex items-center justify-center w-20 h-20 rounded-full mb-6 mx-auto"
+              style={{ background: '#fef3c7' }}
+            >
+              <Heart className="w-9 h-9 fill-current" style={{ color: '#d97706' }} />
             </div>
-            <div className="text-center">
+            <h3 className="font-serif font-bold text-stone-800 mb-3" style={{ fontSize: '1.75rem' }}>
+              Your wishlist is empty
+            </h3>
+            <p className="text-stone-500 mb-8 max-w-md mx-auto leading-relaxed" style={{ fontSize: '0.9rem' }}>
+              Start exploring our collections and save your favourite pieces to build your perfect wishlist.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link
                 to="/shop"
-                className="inline-flex items-center space-x-2 bg-stone-100 text-stone-800 px-6 py-3 rounded-lg font-medium hover:bg-stone-200 transition-colors"
+                className="inline-flex items-center gap-2 font-semibold rounded-lg transition-all duration-200"
+                style={{ padding: '0.85rem 2rem', background: '#d97706', color: 'white', fontSize: '0.85rem', textDecoration: 'none', boxShadow: '0 4px 16px rgba(217,119,6,0.3)' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#b45309'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#d97706'; }}
               >
-                <span>Continue Shopping</span>
-                <ArrowRight className="w-4 h-4" />
+                Browse Products <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link
+                to="/quote"
+                className="inline-flex items-center gap-2 font-semibold rounded-lg transition-all duration-200"
+                style={{ padding: '0.85rem 2rem', background: 'white', color: '#1c1917', fontSize: '0.85rem', textDecoration: 'none', border: '1.5px solid #e7e5e4' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#d97706'; (e.currentTarget as HTMLElement).style.color = '#d97706'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#e7e5e4'; (e.currentTarget as HTMLElement).style.color = '#1c1917'; }}
+              >
+                View Quote
               </Link>
             </div>
           </div>
         )}
       </div>
+
+      <style>{`
+        @keyframes fadeSlideUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .group:hover .group-hover\\:opacity-100 { opacity: 1 !important; }
+        .group:hover .group-hover\\:scale-105 { transform: scale(1.05); }
+      `}</style>
     </div>
   );
 };

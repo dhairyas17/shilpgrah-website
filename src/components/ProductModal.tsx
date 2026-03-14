@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Heart, ShoppingBag, ChevronLeft, ChevronRight, Check, Plus, Minus } from 'lucide-react';
+import { X, Heart, ShoppingBag, ChevronLeft, ChevronRight, Check, Plus, Minus, ZoomIn } from 'lucide-react';
 import { Product } from '../types/Product';
 import { useWishlist } from '../contexts/WishlistContext';
 import { useQuote } from '../contexts/QuoteContext';
@@ -7,15 +7,22 @@ import { useQuote } from '../contexts/QuoteContext';
 interface Props { product: Product; isOpen: boolean; onClose: () => void; }
 
 const ProductModal: React.FC<Props> = ({ product, isOpen, onClose }) => {
-  const [imgIdx, setImgIdx] = useState(0);
-  const [expanded, setExpanded] = useState(false);
-  const [qty, setQty] = useState(1);
-  const [added, setAdded] = useState(false);
-  const [visible, setVisible] = useState(false);
+  const [imgIdx, setImgIdx]       = useState(0);
+  const [expanded, setExpanded]   = useState(false);
+  const [qty, setQty]             = useState(1);
+  const [added, setAdded]         = useState(false);
+  const [visible, setVisible]     = useState(false);
+  const [lightbox, setLightbox]   = useState(false);
+  const [lbIdx, setLbIdx]         = useState(0);
 
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const { addToQuote } = useQuote();
   const wishlisted = isInWishlist(product.id);
+
+  // Pad images array to always show 5 slots
+  const imgs = product.images.length >= 5
+    ? product.images.slice(0, 5)
+    : [...product.images, ...Array(5 - product.images.length).fill(product.images[0])];
 
   useEffect(() => {
     if (isOpen) {
@@ -29,16 +36,27 @@ const ProductModal: React.FC<Props> = ({ product, isOpen, onClose }) => {
     return () => { document.body.style.overflow = ''; };
   }, [isOpen]);
 
-  useEffect(() => { setImgIdx(0); setExpanded(false); setQty(1); }, [product.id]);
+  useEffect(() => { setImgIdx(0); setExpanded(false); setQty(1); setLightbox(false); }, [product.id]);
+
+  // keyboard nav for lightbox
+  useEffect(() => {
+    if (!lightbox) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setLightbox(false);
+      if (e.key === 'ArrowRight') setLbIdx(p => (p + 1) % imgs.length);
+      if (e.key === 'ArrowLeft')  setLbIdx(p => (p - 1 + imgs.length) % imgs.length);
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [lightbox, imgs.length]);
 
   if (!isOpen) return null;
 
-  const dims = product.dimensions;
+  const dims   = product.dimensions;
   const dimStr = dims ? `${dims.length} × ${dims.width} × ${dims.height} ${dims.unit}` : null;
-
-  const specs = [
-    { label: 'Material', value: product.material },
-    { label: 'Finish', value: product.finish },
+  const specs  = [
+    { label: 'Material',   value: product.material },
+    { label: 'Finish',     value: product.finish },
     ...(dimStr ? [{ label: 'Dimensions', value: dimStr }] : []),
     ...(product.subcategory ? [{ label: 'Type', value: product.subcategory.replace(/-/g, ' ') }] : []),
   ];
@@ -49,309 +67,423 @@ const ProductModal: React.FC<Props> = ({ product, isOpen, onClose }) => {
     setTimeout(() => setAdded(false), 2500);
   };
 
+  const openLightbox = (i: number) => { setLbIdx(i); setLightbox(true); };
+
   return (
-    <div
-      onClick={(e) => e.target === e.currentTarget && onClose()}
-      style={{
-        position: 'fixed', inset: 0, zIndex: 9999,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        padding: '1rem',
-        background: 'rgba(28, 20, 10, 0.7)',
-        backdropFilter: 'blur(6px)',
-        WebkitBackdropFilter: 'blur(6px)',
-        opacity: visible ? 1 : 0,
-        transition: 'opacity 0.3s ease',
-      }}
-    >
+    <>
+      {/* ══════════  MAIN MODAL  ══════════ */}
       <div
-        className="modal-inner"
+        onClick={e => e.target === e.currentTarget && onClose()}
         style={{
-          position: 'relative',
-          width: '100%',
-          maxWidth: '920px',
-          maxHeight: '90vh',
-          background: 'white',
-          borderRadius: '16px',
-          overflow: 'hidden',
-          boxShadow: '0 32px 80px rgba(0,0,0,0.3)',
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          transform: visible ? 'translateY(0) scale(1)' : 'translateY(28px) scale(0.96)',
-          transition: 'transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)',
+          position: 'fixed', inset: 0, zIndex: 9999,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          padding: '1rem',
+          background: 'rgba(20,12,4,0.75)',
+          backdropFilter: 'blur(8px)',
+          opacity: visible ? 1 : 0,
+          transition: 'opacity 0.3s ease',
         }}
       >
-        {/* ══ LEFT — IMAGE ══ */}
-        <div style={{ background: '#f5f0e8', display: 'flex', flexDirection: 'column', position: 'relative' }}>
-
-          {/* Main image */}
-          <div style={{ position: 'relative', flex: 1, minHeight: '380px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <img
-              key={imgIdx}
-              src={product.images[imgIdx]}
-              alt={product.name}
-              style={{
-                maxWidth: '100%', maxHeight: '460px',
-                objectFit: 'contain',
-                padding: '2rem',
-                animation: 'modalFadeIn 0.25s ease',
-              }}
-            />
-
-            {product.images.length > 1 && (
-              <>
-                <button
-                  onClick={() => setImgIdx((p) => (p - 1 + product.images.length) % product.images.length)}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full flex items-center justify-center transition-all duration-200 hover:bg-white"
-                  style={{ width: '2.2rem', height: '2.2rem', background: 'rgba(255,255,255,0.75)', border: 'none', cursor: 'pointer', color: '#44403c', boxShadow: '0 2px 8px rgba(0,0,0,0.12)' }}
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={() => setImgIdx((p) => (p + 1) % product.images.length)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full flex items-center justify-center transition-all duration-200 hover:bg-white"
-                  style={{ width: '2.2rem', height: '2.2rem', background: 'rgba(255,255,255,0.75)', border: 'none', cursor: 'pointer', color: '#44403c', boxShadow: '0 2px 8px rgba(0,0,0,0.12)' }}
-                >
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </>
-            )}
-
-            {/* Image count pill */}
-            {product.images.length > 1 && (
-              <div
-                className="absolute bottom-3 right-3 text-xs text-stone-500 px-2 py-0.5 rounded-full"
-                style={{ background: 'rgba(255,255,255,0.8)', fontSize: '0.65rem', fontWeight: 500 }}
-              >
-                {imgIdx + 1} / {product.images.length}
-              </div>
-            )}
-          </div>
-
-          {/* Thumbnails */}
-          {product.images.length > 1 && (
-            <div
-              className="flex gap-2 p-3 overflow-x-auto"
-              style={{ borderTop: '1px solid #e7ddd0', background: 'rgba(255,255,255,0.4)' }}
-            >
-              {product.images.map((img, i) => (
-                <button
-                  key={i}
-                  onClick={() => setImgIdx(i)}
-                  style={{
-                    flexShrink: 0, width: '3.5rem', height: '3.5rem',
-                    overflow: 'hidden', borderRadius: '6px',
-                    border: `2px solid ${i === imgIdx ? '#d97706' : 'transparent'}`,
-                    opacity: i === imgIdx ? 1 : 0.5,
-                    background: 'none', cursor: 'pointer', padding: 0,
-                    transition: 'all 0.2s',
-                  }}
-                >
-                  <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* ══ RIGHT — DETAILS ══ */}
         <div
+          className="pm-inner"
           style={{
-            padding: '2.25rem 2rem',
-            overflowY: 'auto',
-            maxHeight: '90vh',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '1.25rem',
+            position: 'relative', width: '100%', maxWidth: '960px',
+            maxHeight: '92vh', borderRadius: '18px', overflow: 'hidden',
+            display: 'grid', gridTemplateColumns: '1fr 1fr',
+            boxShadow: '0 40px 100px rgba(0,0,0,0.4)',
+            transform: visible ? 'translateY(0) scale(1)' : 'translateY(30px) scale(0.96)',
+            transition: 'transform 0.45s cubic-bezier(0.16,1,0.3,1)',
           }}
         >
-          {/* Category */}
-          <div style={{ fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#d97706', fontWeight: 600 }}>
-            {product.subcategory?.replace(/-/g, ' ') || product.category}
-          </div>
 
-          {/* Name + tagline */}
-          <div>
-            <h2
-              className="font-serif text-stone-900"
-              style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2rem)', fontWeight: 700, lineHeight: 1.2, marginBottom: '0.5rem' }}
-            >
-              {product.name}
-            </h2>
-            <p style={{ fontSize: '0.85rem', color: '#78716c', lineHeight: 1.75 }}>
-              {product.shortDescription}
-            </p>
-          </div>
+          {/* ══ LEFT — WHITE IMAGE PANEL ══ */}
+          <div style={{ background: '#ffffff', display: 'flex', flexDirection: 'column' }}>
 
-          {/* Amber divider */}
-          <div style={{ height: '1px', background: 'linear-gradient(90deg, #d97706 0%, #fde68a 50%, transparent 100%)' }} />
-
-          {/* Specs */}
-          <div>
-            <p style={{ fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#a8a29e', fontWeight: 600, marginBottom: '0.75rem' }}>
-              Specifications
-            </p>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
-              {specs.map(s => (
-                <div
-                  key={s.label}
-                  style={{
-                    padding: '0.65rem 0.85rem',
-                    background: '#fafaf9',
-                    borderRadius: '8px',
-                    border: '1px solid #e7e5e4',
-                    borderLeft: '3px solid #d97706',
-                  }}
-                >
-                  <div style={{ fontSize: '0.58rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#a8a29e', fontWeight: 600, marginBottom: '0.2rem' }}>
-                    {s.label}
-                  </div>
-                  <div style={{ fontSize: '0.82rem', color: '#1c1917', fontWeight: 600, textTransform: 'capitalize' }}>
-                    {s.value}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Description */}
-          <div>
-            <p style={{ fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#a8a29e', fontWeight: 600, marginBottom: '0.5rem' }}>
-              About this piece
-            </p>
-            <p style={{ fontSize: '0.82rem', color: '#78716c', lineHeight: 1.8 }}>
-              {expanded ? product.longDescription : `${product.longDescription?.slice(0, 200)}...`}
-            </p>
-            <button
-              onClick={() => setExpanded(!expanded)}
-              style={{ marginTop: '0.35rem', fontSize: '0.75rem', color: '#d97706', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 600, padding: 0 }}
-            >
-              {expanded ? 'Show less ↑' : 'Read more ↓'}
-            </button>
-          </div>
-
-          {/* Tags */}
-          {product.tags?.length > 0 && (
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
-              {product.tags.map(tag => (
-                <span
-                  key={tag}
-                  style={{
-                    padding: '0.2rem 0.65rem',
-                    borderRadius: '999px',
-                    background: '#fef3c7',
-                    color: '#92400e',
-                    fontSize: '0.65rem',
-                    fontWeight: 500,
-                    letterSpacing: '0.06em',
-                  }}
-                >
-                  #{tag}
-                </span>
-              ))}
-            </div>
-          )}
-
-          {/* Qty */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <span style={{ fontSize: '0.75rem', color: '#78716c', fontWeight: 600, letterSpacing: '0.08em' }}>
-              Quantity
-            </span>
+            {/* Big hero image */}
             <div
               style={{
-                display: 'flex', alignItems: 'center',
-                border: '1.5px solid #e7e5e4',
-                borderRadius: '8px',
+                flex: 1, minHeight: '340px', position: 'relative',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                background: '#fafaf9', cursor: 'zoom-in',
                 overflow: 'hidden',
               }}
+              onClick={() => openLightbox(imgIdx)}
             >
+              <img
+                key={imgIdx}
+                src={imgs[imgIdx]}
+                alt={product.name}
+                style={{
+                  maxWidth: '85%', maxHeight: '320px',
+                  objectFit: 'contain',
+                  animation: 'pmFadeIn 0.2s ease',
+                  transition: 'transform 0.4s ease',
+                }}
+              />
+
+              {/* Zoom hint */}
+              <div style={{
+                position: 'absolute', top: '0.75rem', right: '0.75rem',
+                width: '2rem', height: '2rem', borderRadius: '50%',
+                background: 'rgba(255,255,255,0.85)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+              }}>
+                <ZoomIn style={{ width: '0.9rem', height: '0.9rem', color: '#78716c' }} />
+              </div>
+
+              {/* Prev / Next arrows */}
+              {imgs.length > 1 && (
+                <>
+                  <button
+                    onClick={e => { e.stopPropagation(); setImgIdx(p => (p - 1 + imgs.length) % imgs.length); }}
+                    style={{
+                      position: 'absolute', left: '0.6rem', top: '50%', transform: 'translateY(-50%)',
+                      width: '2rem', height: '2rem', borderRadius: '50%',
+                      background: 'rgba(255,255,255,0.9)', border: 'none', cursor: 'pointer',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.1)', color: '#44403c',
+                    }}
+                  ><ChevronLeft style={{ width: '0.85rem', height: '0.85rem' }} /></button>
+                  <button
+                    onClick={e => { e.stopPropagation(); setImgIdx(p => (p + 1) % imgs.length); }}
+                    style={{
+                      position: 'absolute', right: '0.6rem', top: '50%', transform: 'translateY(-50%)',
+                      width: '2rem', height: '2rem', borderRadius: '50%',
+                      background: 'rgba(255,255,255,0.9)', border: 'none', cursor: 'pointer',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.1)', color: '#44403c',
+                    }}
+                  ><ChevronRight style={{ width: '0.85rem', height: '0.85rem' }} /></button>
+                </>
+              )}
+            </div>
+
+            {/* 4 thumbnail strip (slots 1-4, index 0 is the big one) */}
+            <div style={{
+              display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
+              gap: '6px', padding: '10px',
+              borderTop: '1px solid #f0ece4',
+              background: '#ffffff',
+            }}>
+              {imgs.slice(1, 5).map((img, i) => {
+                const realIdx = i + 1;
+                return (
+                  <div
+                    key={i}
+                    onClick={() => setImgIdx(realIdx)}
+                    style={{
+                      aspectRatio: '1',
+                      borderRadius: '8px',
+                      overflow: 'hidden',
+                      cursor: 'pointer',
+                      border: `2px solid ${imgIdx === realIdx ? '#d97706' : 'transparent'}`,
+                      background: '#fafaf9',
+                      position: 'relative',
+                      transition: 'border-color 0.15s, transform 0.15s',
+                      transform: imgIdx === realIdx ? 'scale(1.03)' : 'scale(1)',
+                    }}
+                  >
+                    <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    {/* zoom overlay on hover */}
+                    <div
+                      onClick={e => { e.stopPropagation(); openLightbox(realIdx); }}
+                      style={{
+                        position: 'absolute', inset: 0,
+                        background: 'rgba(0,0,0,0)',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        transition: 'background 0.2s',
+                        borderRadius: '6px',
+                      }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(0,0,0,0.25)'; }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(0,0,0,0)'; }}
+                    >
+                      <ZoomIn style={{ width: '0.9rem', height: '0.9rem', color: 'white', opacity: 0, transition: 'opacity 0.2s' }}
+                        className="thumb-zoom-icon" />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* ══ RIGHT — AMBER PANEL ══ */}
+          <div
+            style={{
+              background: 'linear-gradient(160deg, #fffbeb 0%, #fef9f0 60%, #fef3c7 100%)',
+              padding: '2rem 1.75rem',
+              overflowY: 'auto',
+              maxHeight: '92vh',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '1.1rem',
+              borderLeft: '1.5px solid #fde68a',
+            }}
+          >
+            {/* Category */}
+            <div style={{ fontSize: '0.58rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#b45309', fontWeight: 700, fontFamily: 'system-ui, sans-serif' }}>
+              {product.subcategory?.replace(/-/g, ' ') || product.category}
+            </div>
+
+            {/* Name */}
+            <div>
+              <h2 className="font-serif" style={{ fontSize: 'clamp(1.4rem, 2.2vw, 1.85rem)', fontWeight: 700, lineHeight: 1.2, color: '#1c1917', marginBottom: '0.5rem' }}>
+                {product.name}
+              </h2>
+              <p style={{ fontSize: '0.83rem', color: '#78716c', lineHeight: 1.75, fontFamily: 'system-ui, sans-serif' }}>
+                {product.shortDescription}
+              </p>
+            </div>
+
+            {/* Amber divider */}
+            <div style={{ height: '2px', background: 'linear-gradient(90deg, #d97706, #fbbf24, transparent)', borderRadius: '1px' }} />
+
+            {/* Specs */}
+            <div>
+              <p style={{ fontSize: '0.58rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#92400e', fontWeight: 700, marginBottom: '0.65rem', fontFamily: 'system-ui, sans-serif' }}>
+                Specifications
+              </p>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.6rem' }}>
+                {specs.map(s => (
+                  <div key={s.label} style={{
+                    padding: '0.6rem 0.85rem',
+                    background: 'rgba(255,255,255,0.7)',
+                    borderRadius: '10px',
+                    border: '1px solid rgba(251,191,36,0.4)',
+                    borderLeft: '3px solid #d97706',
+                    backdropFilter: 'blur(4px)',
+                  }}>
+                    <div style={{ fontSize: '0.55rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#92400e', fontWeight: 700, marginBottom: '0.2rem', fontFamily: 'system-ui, sans-serif' }}>
+                      {s.label}
+                    </div>
+                    <div style={{ fontSize: '0.8rem', color: '#1c1917', fontWeight: 600, textTransform: 'capitalize', fontFamily: 'Georgia, serif' }}>
+                      {s.value}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Description */}
+            <div>
+              <p style={{ fontSize: '0.58rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#92400e', fontWeight: 700, marginBottom: '0.4rem', fontFamily: 'system-ui, sans-serif' }}>
+                About this piece
+              </p>
+              <p style={{ fontSize: '0.8rem', color: '#78716c', lineHeight: 1.8, fontFamily: 'system-ui, sans-serif' }}>
+                {expanded ? product.longDescription : `${product.longDescription?.slice(0, 180)}...`}
+              </p>
               <button
-                onClick={() => setQty(Math.max(1, qty - 1))}
-                className="hover:bg-stone-100 transition-colors"
-                style={{ width: '2.2rem', height: '2.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', cursor: 'pointer', color: '#44403c' }}
+                onClick={() => setExpanded(!expanded)}
+                style={{ marginTop: '0.3rem', fontSize: '0.73rem', color: '#d97706', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 700, padding: 0, fontFamily: 'system-ui, sans-serif' }}
               >
-                <Minus className="w-3 h-3" />
+                {expanded ? 'Show less ↑' : 'Read more ↓'}
               </button>
-              <span style={{ width: '2.5rem', textAlign: 'center', fontSize: '0.9rem', color: '#1c1917', fontWeight: 600 }}>
-                {qty}
-              </span>
+            </div>
+
+            {/* Tags */}
+            {product.tags?.length > 0 && (
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem' }}>
+                {product.tags.map(tag => (
+                  <span key={tag} style={{
+                    padding: '0.2rem 0.6rem', borderRadius: '999px',
+                    background: 'rgba(255,255,255,0.7)',
+                    border: '1px solid rgba(217,119,6,0.3)',
+                    color: '#92400e', fontSize: '0.62rem', fontWeight: 600,
+                    letterSpacing: '0.06em', fontFamily: 'system-ui, sans-serif',
+                  }}>
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            {/* Qty */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <span style={{ fontSize: '0.72rem', color: '#78716c', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', fontFamily: 'system-ui, sans-serif' }}>Qty</span>
+              <div style={{ display: 'flex', alignItems: 'center', border: '1.5px solid rgba(217,119,6,0.35)', borderRadius: '8px', overflow: 'hidden', background: 'rgba(255,255,255,0.7)' }}>
+                <button onClick={() => setQty(Math.max(1, qty - 1))}
+                  style={{ width: '2.1rem', height: '2.1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', cursor: 'pointer', color: '#78716c' }}>
+                  <Minus style={{ width: '0.75rem', height: '0.75rem' }} />
+                </button>
+                <span style={{ width: '2.25rem', textAlign: 'center', fontSize: '0.9rem', color: '#1c1917', fontWeight: 700, fontFamily: 'Georgia, serif' }}>{qty}</span>
+                <button onClick={() => setQty(qty + 1)}
+                  style={{ width: '2.1rem', height: '2.1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', cursor: 'pointer', color: '#78716c' }}>
+                  <Plus style={{ width: '0.75rem', height: '0.75rem' }} />
+                </button>
+              </div>
+            </div>
+
+            {/* CTAs */}
+            <div style={{ display: 'flex', gap: '0.55rem', marginTop: 'auto' }}>
               <button
-                onClick={() => setQty(qty + 1)}
-                className="hover:bg-stone-100 transition-colors"
-                style={{ width: '2.2rem', height: '2.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', cursor: 'pointer', color: '#44403c' }}
+                onClick={() => wishlisted ? removeFromWishlist(product.id) : addToWishlist(product)}
+                style={{
+                  width: '3rem', height: '3rem', flexShrink: 0, borderRadius: '12px',
+                  background: wishlisted ? '#fee2e2' : 'rgba(255,255,255,0.8)',
+                  border: `1.5px solid ${wishlisted ? '#fca5a5' : 'rgba(217,119,6,0.3)'}`,
+                  color: wishlisted ? '#ef4444' : '#78716c',
+                  cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  transition: 'all 0.2s',
+                }}
               >
-                <Plus className="w-3 h-3" />
+                <Heart style={{ width: '1rem', height: '1rem', fill: wishlisted ? 'currentColor' : 'none', strokeWidth: 2 }} />
+              </button>
+
+              <button
+                onClick={handleAddToQuote}
+                style={{
+                  flex: 1, height: '3rem', borderRadius: '12px',
+                  background: added ? '#065f46' : '#d97706',
+                  color: 'white', border: 'none', cursor: 'pointer',
+                  fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase',
+                  boxShadow: added ? '0 4px 16px rgba(6,95,70,0.35)' : '0 6px 20px rgba(217,119,6,0.4)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem',
+                  transition: 'all 0.3s ease', fontFamily: 'system-ui, sans-serif',
+                }}
+                onMouseEnter={e => { if (!added) (e.currentTarget as HTMLElement).style.background = '#b45309'; }}
+                onMouseLeave={e => { if (!added) (e.currentTarget as HTMLElement).style.background = '#d97706'; }}
+              >
+                {added
+                  ? <><Check style={{ width: '1rem', height: '1rem' }} /><span>Added to Quote!</span></>
+                  : <><ShoppingBag style={{ width: '1rem', height: '1rem' }} /><span>Add to Quote</span></>
+                }
               </button>
             </div>
           </div>
 
-          {/* CTAs */}
-          <div style={{ display: 'flex', gap: '0.6rem', marginTop: 'auto' }}>
-            <button
-              onClick={() => wishlisted ? removeFromWishlist(product.id) : addToWishlist(product)}
-              className="rounded-xl transition-all duration-200 flex items-center justify-center"
-              style={{
-                width: '3rem', height: '3rem', flexShrink: 0,
-                background: wishlisted ? '#fee2e2' : '#f5f5f4',
-                border: `1.5px solid ${wishlisted ? '#fca5a5' : '#e7e5e4'}`,
-                color: wishlisted ? '#ef4444' : '#78716c',
-                cursor: 'pointer',
-                transition: 'all 0.25s ease',
-              }}
-            >
-              <Heart className="w-4 h-4" style={{ fill: wishlisted ? 'currentColor' : 'none', strokeWidth: 2 }} />
-            </button>
-
-            <button
-              onClick={handleAddToQuote}
-              className="flex-1 rounded-xl flex items-center justify-center gap-2 transition-all duration-300"
-              style={{
-                height: '3rem',
-                background: added ? '#065f46' : '#d97706',
-                color: 'white',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: '0.72rem',
-                fontWeight: 700,
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                boxShadow: added
-                  ? '0 4px 16px rgba(6,95,70,0.35)'
-                  : '0 4px 16px rgba(217,119,6,0.35)',
-                transition: 'all 0.3s ease',
-              }}
-              onMouseEnter={(e) => { if (!added) (e.currentTarget as HTMLElement).style.background = '#b45309'; }}
-              onMouseLeave={(e) => { if (!added) (e.currentTarget as HTMLElement).style.background = '#d97706'; }}
-            >
-              {added
-                ? <><Check className="w-4 h-4" /><span>Added to Quote!</span></>
-                : <><ShoppingBag className="w-4 h-4" /><span>Add to Quote</span></>
-              }
-            </button>
-          </div>
+          {/* Close */}
+          <button
+            onClick={onClose}
+            style={{
+              position: 'absolute', top: '0.85rem', right: '0.85rem', zIndex: 20,
+              width: '2.1rem', height: '2.1rem', borderRadius: '50%',
+              background: 'rgba(255,255,255,0.95)', border: '1.5px solid #e7e5e4',
+              color: '#78716c', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
+              transition: 'all 0.2s',
+            }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#fee2e2'; (e.currentTarget as HTMLElement).style.color = '#ef4444'; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.95)'; (e.currentTarget as HTMLElement).style.color = '#78716c'; }}
+          >
+            <X style={{ width: '0.85rem', height: '0.85rem' }} />
+          </button>
         </div>
-
-        {/* CLOSE */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 z-20 rounded-full flex items-center justify-center transition-all duration-200 hover:bg-stone-100"
-          style={{
-            width: '2.25rem', height: '2.25rem',
-            background: 'rgba(255,255,255,0.9)',
-            border: '1.5px solid #e7e5e4',
-            color: '#78716c',
-            cursor: 'pointer',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-          }}
-        >
-          <X className="w-4 h-4" />
-        </button>
       </div>
 
+      {/* ══════════  LIGHTBOX  ══════════ */}
+      {lightbox && (
+        <div
+          onClick={() => setLightbox(false)}
+          style={{
+            position: 'fixed', inset: 0, zIndex: 10000,
+            background: 'rgba(0,0,0,0.92)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            padding: '2rem',
+            animation: 'lbFadeIn 0.2s ease',
+          }}
+        >
+          {/* Main image */}
+          <img
+            src={imgs[lbIdx]}
+            alt={product.name}
+            onClick={e => e.stopPropagation()}
+            style={{
+              maxWidth: '80vw', maxHeight: '80vh',
+              objectFit: 'contain', borderRadius: '12px',
+              boxShadow: '0 32px 80px rgba(0,0,0,0.5)',
+              animation: 'lbSlide 0.2s ease',
+            }}
+          />
+
+          {/* Prev / Next */}
+          {imgs.length > 1 && (
+            <>
+              <button
+                onClick={e => { e.stopPropagation(); setLbIdx(p => (p - 1 + imgs.length) % imgs.length); }}
+                style={{
+                  position: 'absolute', left: '1.5rem', top: '50%', transform: 'translateY(-50%)',
+                  width: '3rem', height: '3rem', borderRadius: '50%',
+                  background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.2)',
+                  color: 'white', cursor: 'pointer',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  transition: 'background 0.2s',
+                }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.25)'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.12)'; }}
+              ><ChevronLeft style={{ width: '1.2rem', height: '1.2rem' }} /></button>
+
+              <button
+                onClick={e => { e.stopPropagation(); setLbIdx(p => (p + 1) % imgs.length); }}
+                style={{
+                  position: 'absolute', right: '1.5rem', top: '50%', transform: 'translateY(-50%)',
+                  width: '3rem', height: '3rem', borderRadius: '50%',
+                  background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.2)',
+                  color: 'white', cursor: 'pointer',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  transition: 'background 0.2s',
+                }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.25)'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.12)'; }}
+              ><ChevronRight style={{ width: '1.2rem', height: '1.2rem' }} /></button>
+            </>
+          )}
+
+          {/* Thumbnail row */}
+          <div style={{
+            position: 'absolute', bottom: '1.5rem', left: '50%', transform: 'translateX(-50%)',
+            display: 'flex', gap: '8px',
+          }}>
+            {imgs.map((img, i) => (
+              <div
+                key={i}
+                onClick={e => { e.stopPropagation(); setLbIdx(i); }}
+                style={{
+                  width: '3.5rem', height: '3.5rem', borderRadius: '8px', overflow: 'hidden',
+                  border: `2px solid ${i === lbIdx ? '#d97706' : 'rgba(255,255,255,0.2)'}`,
+                  cursor: 'pointer', opacity: i === lbIdx ? 1 : 0.55,
+                  transition: 'all 0.2s', flexShrink: 0,
+                }}
+              >
+                <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              </div>
+            ))}
+          </div>
+
+          {/* Counter */}
+          <div style={{
+            position: 'absolute', top: '1.25rem', left: '50%', transform: 'translateX(-50%)',
+            padding: '0.3rem 0.85rem', borderRadius: '999px',
+            background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.15)',
+            color: 'rgba(255,255,255,0.75)', fontSize: '0.72rem', fontWeight: 600,
+            fontFamily: 'system-ui, sans-serif',
+          }}>
+            {lbIdx + 1} / {imgs.length}
+          </div>
+
+          {/* Close */}
+          <button
+            onClick={() => setLightbox(false)}
+            style={{
+              position: 'absolute', top: '1.25rem', right: '1.25rem',
+              width: '2.5rem', height: '2.5rem', borderRadius: '50%',
+              background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)',
+              color: 'white', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}
+          ><X style={{ width: '1rem', height: '1rem' }} /></button>
+        </div>
+      )}
+
       <style>{`
-        @keyframes modalFadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
-        @media (max-width: 640px) { .modal-inner { grid-template-columns: 1fr !important; } }
+        @keyframes pmFadeIn  { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: scale(1); } }
+        @keyframes lbFadeIn  { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes lbSlide   { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        .pm-inner { }
+        @media (max-width: 640px) { .pm-inner { grid-template-columns: 1fr !important; } }
+        div:hover > .thumb-zoom-icon { opacity: 1 !important; }
       `}</style>
-    </div>
+    </>
   );
 };
 

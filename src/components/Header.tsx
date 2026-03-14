@@ -20,7 +20,7 @@ const Header: React.FC = () => {
     { name: 'Contact', href: '/contact' },
   ];
 
-  const isHome = location.pathname === '/contact';
+  const isHome = location.pathname === '/contacts';
 
   // Show header only at top
   useEffect(() => {

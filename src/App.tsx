@@ -4,6 +4,7 @@ import { WishlistProvider } from './contexts/WishlistContext';
 import { QuoteProvider } from './contexts/QuoteContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
 import HomePage from './pages/HomePage';
 import ShopPage from './pages/ShopPage';
 import AboutPage from './pages/AboutPage';
@@ -12,8 +13,6 @@ import WishlistPage from './pages/WishlistPage';
 import GalleryPage from './pages/GalleryPage';
 import QuotePage from './pages/QuotePage';
 import QuoteRequestPage from './pages/QuoteRequestPage';
-// import ShopPage1 from './pages/ShopPage1';
-// import ShopPage1 from './pages/CollectionsPage';
 import CollectionPage from './pages/CollectionPage';
 
 function App() {
@@ -22,6 +21,7 @@ function App() {
       <WishlistProvider>
         <QuoteProvider>
           <div className="min-h-screen bg-stone-50">
+            <ScrollToTop />
             <Header />
             <main>
               <Routes>
@@ -30,8 +30,6 @@ function App() {
                 <Route path="/shop/:category" element={<ShopPage />} />
                 <Route path="/collection" element={<CollectionPage />} />
                 <Route path="/collection/:category" element={<CollectionPage />} />
-                
-                {/* <Route path="/collections/:category" element={<ShopPage1/>} /> */}
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/contact" element={<ContactPage />} />
                 <Route path="/wishlist" element={<WishlistPage />} />

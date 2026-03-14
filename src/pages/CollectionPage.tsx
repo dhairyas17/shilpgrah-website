@@ -50,16 +50,6 @@ const CollectionPage: React.FC = () => {
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: "linear-gradient(90deg, transparent 0%, #d97706 30%, #fbbf24 70%, transparent 100%)" }} />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          {category && (
-            <button
-              onClick={() => navigate("/collection")}
-              className="inline-flex items-center gap-1.5 mb-5 text-amber-700 hover:text-amber-900 transition-colors duration-200"
-              style={{ fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", background: "none", border: "none", cursor: "pointer" }}
-            >
-              <ArrowLeft className="w-3.5 h-3.5" />
-              All Collections
-            </button>
-          )}
 
           <p
             className="text-amber-700 font-semibold tracking-widest uppercase mb-2"
