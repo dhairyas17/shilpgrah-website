@@ -55,7 +55,7 @@ const Header: React.FC = () => {
             <img
               src="/assets/shilpgrah_logo.png"
               alt="Shilpgrah Logo"
-              className="h-24 sm:h-28 lg:h-32 w-auto object-contain"
+              className="h-24 sm:h-16 lg:h-20 w-auto object-contain"
             />
           </Link>
 
@@ -66,7 +66,7 @@ const Header: React.FC = () => {
               const linkColor = isActive
                 ? 'text-amber-800'
                 : isHome
-                ? 'text-white'
+                ? 'text-black'
                 : 'text-black';
               return (
                 <Link
@@ -84,22 +84,22 @@ const Header: React.FC = () => {
           <div className="hidden lg:flex items-center space-x-4">
             <Link
               to="/wishlist"
-              className={`p-2 relative hover:text-amber-700 transition-colors ${isHome ? 'text-white' : 'text-black'}`}
+              className={'p-2 relative hover:text-amber-700 transition-colors text-black'}
             >
               <Heart className="w-5 h-5" />
               {wishlist.length > 0 && (
-                <span className="absolute -top-1 -right-1 bg-amber-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-amber-600 text-black text-xs rounded-full w-5 h-5 flex items-center justify-center">
                   {wishlist.length}
                 </span>
               )}
             </Link>
             <Link
               to="/quote"
-              className={`p-2 relative hover:text-amber-700 transition-colors ${isHome ? 'text-white' : 'text-black'}`}
+              className={`p-2 relative hover:text-amber-700 transition-colors text-black`}
             >
               <ShoppingBag className="w-5 h-5" />
               {getTotalItems() > 0 && (
-                <span className="absolute -top-1 -right-1 bg-amber-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-amber-600 text-black text-xs rounded-full w-5 h-5 flex items-center justify-center">
                   {getTotalItems()}
                 </span>
               )}
@@ -109,7 +109,7 @@ const Header: React.FC = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className={`lg:hidden p-2 transition-colors ${isHome ? 'text-white' : 'text-black'} hover:text-amber-700`}
+            className={`lg:hidden p-2 transition-colors text-black hover:text-amber-700`}
           >
             {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -125,7 +125,7 @@ const Header: React.FC = () => {
             <div className="px-4 py-4 space-y-4">
               {navigation.map((item) => {
                 const isActive = location.pathname === item.href;
-                const linkColor = isActive ? 'text-amber-800' : isHome ? 'text-white' : 'text-black';
+                const linkColor = isActive ? 'text-amber-800' : isHome ? 'text-black' : 'text-black';
                 return (
                   <Link
                     key={item.name}
@@ -141,7 +141,7 @@ const Header: React.FC = () => {
                 <Link
                   to="/wishlist"
                   onClick={() => setIsMenuOpen(false)}
-                  className={`flex items-center space-x-2 hover:text-amber-700 ${isHome ? 'text-white' : 'text-black'}`}
+                  className={`flex items-center space-x-2 hover:text-amber-700 ${isHome ? 'text-black' : 'text-black'}`}
                 >
                   <Heart className="w-5 h-5" />
                   <span>Wishlist ({wishlist.length})</span>
@@ -149,7 +149,7 @@ const Header: React.FC = () => {
                 <Link
                   to="/quote"
                   onClick={() => setIsMenuOpen(false)}
-                  className={`flex items-center space-x-2 hover:text-amber-700 ${isHome ? 'text-white' : 'text-black'}`}
+                  className={`flex items-center space-x-2 hover:text-amber-700 ${isHome ? 'text-black' : 'text-black'}`}
                 >
                   <ShoppingBag className="w-5 h-5" />
                   <span>Quote ({getTotalItems()})</span>
