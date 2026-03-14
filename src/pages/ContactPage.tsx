@@ -39,7 +39,7 @@ const ContactPage: React.FC = () => {
   const contactInfo = [
     {
       icon: <MapPin className="w-6 h-6" />,
-      title: 'Visit Our Showroom',
+      title: 'Visit Our Factory Outlet',
       details: [
         'Shilpgrah Handicrafts',
         'Plot No 12A, Khasra NO 93',
@@ -98,7 +98,7 @@ const ContactPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-stone-50 pt-20">
       {/* Hero Section */}
-      <section className="relative py-16 lg:py-24 bg-gradient-to-r from-amber-600 to-amber-700">
+      <section className="relative py-16 lg:py-24">
         <div className="absolute inset-0 opacity-10">
           <svg
             className="w-full h-full"
@@ -110,18 +110,17 @@ const ContactPage: React.FC = () => {
         </div>
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white mb-6">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-amber-800 mb-6">
             Get in Touch
           </h1>
-          <p className="text-xl md:text-2xl text-amber-100 max-w-4xl mx-auto leading-relaxed">
-            Ready to bring authentic Rajasthani craftsmanship to your space? 
-            We're here to help you find the perfect pieces or create custom designs.
+          <p className="text-lg md:text-lg text-black max-w-5xl mx-auto leading-relaxed">
+          Bring authentic Rajasthani craftsmanship to your space. We’ll help you find the perfect pieces or custom designs.
           </p>
         </div>
       </section>
 
       {/* Contact Form & Info Section */}
-      <section className="py-16 lg:py-24">
+      <section className="py-16 lg:py-0">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
             {/* Contact Form */}
@@ -276,29 +275,28 @@ const ContactPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Map Section */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-serif font-bold text-stone-800 mb-4">
-              Visit Our Showroom
+              Find Us on the Map
             </h2>
             <p className="text-xl text-stone-600 max-w-3xl mx-auto">
-              Located in the heart of Jodhpur, Rajasthan - the Blue City known for its magnificent palaces and rich handicraft heritage
+              Located in the heart of Jodhpur, Rajasthan.
             </p>
           </div>
           
-          <div className="bg-stone-100 rounded-2xl p-8 text-center">
-            <div className="text-stone-500 text-6xl mb-4">🗺️</div>
-            <h3 className="text-xl font-semibold text-stone-800 mb-2">Interactive Map</h3>
-            <p className="text-stone-600 mb-4">
-              Our showroom is located in Jodhpur, Rajasthan, India. 
-              Contact us for detailed directions and appointment scheduling.
-            </p>
-            <div className="inline-flex items-center space-x-2 text-amber-600 font-medium">
-              <MapPin className="w-5 h-5" />
-              <span>Jodhpur, Rajasthan, India - 342001</span>
-            </div>
+          <div className="overflow-hidden rounded-xl shadow-2xl border-4 border-amber-200">
+            <iframe
+              title="Google Map Location"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3553.848851695594!2d72.99610891509535!3d26.238946983432337!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39418c257e80952b%3A0x8fb336ff959cfe98!2sJodhpur%2C%20Rajasthan%20342001!5e0!3m2!1sen!2sin!4v1696248682254!5m2!1sen!2sin"
+              width="100%"
+              height="500"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            ></iframe>
           </div>
         </div>
       </section>

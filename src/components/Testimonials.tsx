@@ -35,10 +35,10 @@ const Testimonials: React.FC = () => {
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-stone-800 mb-4">
-            Trusted by Customers Worldwide
+            TRUSTED BY CUSTOMERS WORLDWIDE
           </h2>
-          <p className="text-xl text-stone-600 max-w-3xl mx-auto leading-relaxed">
-            Hear from our satisfied customers across the globe who have brought Rajasthani heritage into their spaces
+          <p className="text-lg text-stone-600 max-w-4xl mx-auto leading-relaxed">
+            Hear from our satisfied customers across the globe who have brought Rajasthani heritage into their spaces.
           </p>
         </div>
 
@@ -101,7 +101,7 @@ const Testimonials: React.FC = () => {
               <div className="text-sm text-stone-600">On-Time Delivery</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-stone-800 mb-1">13+</div>
+              <div className="text-2xl font-bold text-stone-800 mb-1">20+</div>
               <div className="text-sm text-stone-600">Countries Served</div>
             </div>
             <div className="text-center">

@@ -22,7 +22,6 @@ const generateProducts = (category: string, subcategory: string, baseProducts: P
       unit: 'cm'
     },
     featured: index < 3,
-    isBestSeller: index < 8, 
     tags: base.tags || ['handcrafted', 'rajasthani', 'traditional', subcategory.toLowerCase()]
   }));
 };
@@ -277,7 +276,7 @@ export const products: Product[] = [
   ...tvcProducts
 ];
 
-
+// Category mapping for navigation
 export const categories = {
   'table': 'Table',
   'sofa-cum-bed': 'Sofa Cum Bed',
@@ -292,40 +291,6 @@ export const categories = {
   'bar-cabinet': 'Bar Cabinet',
   'tvc': 'TVC'
 };
-
-export const homecategories = {
-  table: 'Table',
-  'sofa-cum-bed': 'Sofa Cum Bed',
-  'dining-table': 'Dining Table',
-  'coffee-table': 'Coffee Table',
-  bed: 'Bed',
-  bedside: 'Bedside',
-  sideboard: 'Sideboard',
-  bookshelf: 'BookShelf',
-  chair: 'Chair',
-  almirah: 'Almirah',
-  'bar-cabinet': 'Bar Cabinet',
-  tvc: 'TVC'
-} as const;
-
-export type CategoryKey = keyof typeof homecategories;
-
-export const getCategoryLabel = (slug: string): string =>
-  homecategories[slug as CategoryKey] ?? 'Unknown Category';
-
-
-
-export const topcategories = {
-  'table': 'Table',
-  'dining-table': 'Dining Table',
-  'coffee-table': 'Coffee Table',
-  'bedside': 'Bedside',
-  'sideboard': 'Sideboard',
-  'chair': 'Chair',
-  'bar-cabinet': 'Bar Cabinet',
-  'tvc': 'TVC'
-};
-
 
 export const getProductsByCategory = (category: string) => {
   return products.filter(product => product.category === category);

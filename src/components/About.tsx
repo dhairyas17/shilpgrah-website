@@ -11,7 +11,7 @@ const About: React.FC = () => {
     {
       icon: <Globe className="w-8 h-8" />,
       title: 'Global Reach',
-      description: 'Exporting to 50+ countries with trusted shipping and customs expertise'
+      description: 'Exporting to 20+ countries with trusted shipping and customs expertise'
     },
     {
       icon: <Users className="w-8 h-8" />,
@@ -26,7 +26,10 @@ const About: React.FC = () => {
   ];
 
   return (
-    <section id="about" className="py-16 lg:py-24 bg-white">
+    <section
+  id="about"
+  className="mt-24 lg:mt-32 py-16 lg:py-24 bg-white"
+>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Content */}
@@ -35,8 +38,8 @@ const About: React.FC = () => {
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-stone-800 mb-6">
                 Bringing Rajasthan's Royal Heritage to Your World
               </h2>
-              <p className="text-xl text-stone-600 leading-relaxed mb-6">
-                For over three decades, Shilpgrah has been the bridge between Rajasthan's master craftsmen and discerning customers worldwide. We don't just export products; we share stories, traditions, and the soul of royal India.
+              <p className="text-stone-600 leading-relaxed mb-6">
+                For over a decade, Shilpgrah has been the bridge between Rajasthan's master craftsmen and discerning customers worldwide. We don't just export products; we share stories, traditions, and the soul of royal India.
               </p>
               <p className="text-stone-600 leading-relaxed">
                 Each piece in our collection is carefully selected from skilled artisans across Rajasthan's historic cities - Jodhpur, Jaipur, Udaipur, and beyond. From the intricate Jali work of Jaisalmer to the mirror mosaics of Bikaner, we bring you authentic heritage craftsmanship.
@@ -65,9 +68,9 @@ const About: React.FC = () => {
 
           {/* Image */}
           <div className="relative">
-            <div className="aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl">
+            <div className="h-[650px] overflow-hidden rounded-2xl shadow-2xl">
               <img
-                src="https://images.pexels.com/photos/1194420/pexels-photo-1194420.jpeg"
+                src="/assets/raj.png"
                 alt="Rajasthani craftsman at work"
                 className="w-full h-full object-cover"
               />

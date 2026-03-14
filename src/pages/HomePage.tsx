@@ -5,13 +5,17 @@ import FeaturedProducts from '../components/FeaturedProducts';
 import About from '../components/About';
 import Testimonials from '../components/Testimonials';
 import Newsletter from '../components/Newsletter';
+import ShopCategories from '../components/ShopCategories';
+import BestSellers from '../components/Bestsellers';
 
 const HomePage: React.FC = () => {
   return (
     <div>
       <Hero />
       <About />
-      {/* <FeaturedProducts /> */}
+      <FeaturedProducts />
+      <ShopCategories /> 
+      <BestSellers /> 
       <Testimonials />
       {/* <Newsletter /> */}
     </div>

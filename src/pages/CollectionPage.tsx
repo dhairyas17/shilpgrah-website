@@ -1,9 +1,9 @@
 import React, { useMemo } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import ProductCard from "../components/ProductCards";
+import CollectionCard from "../components/CollectionCards";
 import { products, getProductsBySubcategory, categories } from "../data/products";
 
-const ShopPage: React.FC = () => {
+const CollectionPage: React.FC = () => {
   const { category } = useParams();
   const navigate = useNavigate();
 
@@ -27,7 +27,7 @@ const ShopPage: React.FC = () => {
         {/* Header Title */}
         <div className="mb-12 text-center">
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-3">
-            {category ? categories[category as keyof typeof categories] || "Products" : "All Products"}
+            {category ? categories[category as keyof typeof categories] || "Products" : "Collections"}
           </h1>
           <p className="text-gray-600 max-w-3xl mx-auto">
             Explore our curated collection of authentic Rajasthani handicrafts, handpicked for quality and design.
@@ -37,9 +37,6 @@ const ShopPage: React.FC = () => {
         {/* Category Grid */}
         {!category && (
           <div className="mb-16">
-            <h2 className="text-2xl md:text-3xl font-serif font-bold text-gray-900 mb-8 text-center">
-              Browse by Category
-            </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
               {Object.entries(categories).map(([key, name]) => {
                 const categoryProducts = getProductsBySubcategory(key);
@@ -47,7 +44,7 @@ const ShopPage: React.FC = () => {
                 return (
                   <Link
                     key={key}
-                    to={`/shop/${key}`}
+                    to={`/collection/${key}`}
                     className="group relative bg-white rounded-lg shadow hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
                   >
                     <div className="aspect-square overflow-hidden rounded-lg">
@@ -77,7 +74,7 @@ const ShopPage: React.FC = () => {
           {category && filteredProducts.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
               {filteredProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <CollectionCard key={product.id} product={product} />
               ))}
             </div>
           ) : category ? (
@@ -103,4 +100,4 @@ const ShopPage: React.FC = () => {
   );
 };
 
-export default ShopPage;
+export default CollectionPage;

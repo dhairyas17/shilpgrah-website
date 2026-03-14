@@ -41,13 +41,60 @@ const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Products */}
+          {/* Product Catalogue */}
           <div className="space-y-4">
-            <h4 className="text-lg font-semibold text-white">Our Products</h4>
+            <h4 className="text-lg font-semibold text-white">Product Catalogue</h4>
             <ul className="space-y-2 text-sm">
-              <li><a href="/collections/furniture" className="text-stone-300 hover:text-amber-400 transition-colors">Furniture</a></li>
-              <li><a href="/collections/decor" className="text-stone-300 hover:text-amber-400 transition-colors">Home Decor</a></li>
-              <li><a href="/collections/textiles" className="text-stone-300 hover:text-amber-400 transition-colors">Textiles</a></li>
+              <li>
+                <a
+                  href="/catalogues/furniture.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-stone-300 hover:text-amber-400 transition-colors"
+                >
+                  Furniture Catalogue
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/catalogues/decor.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-stone-300 hover:text-amber-400 transition-colors"
+                >
+                  Home Decor Catalogue
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/catalogues/textiles.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-stone-300 hover:text-amber-400 transition-colors"
+                >
+                  Textile Catalogue
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/catalogues/lighting.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-stone-300 hover:text-amber-400 transition-colors"
+                >
+                  Lighting Catalogue
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/catalogues/mirrorwork.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-stone-300 hover:text-amber-400 transition-colors"
+                >
+                  Mirror Work Catalogue
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -66,10 +113,12 @@ const Footer: React.FC = () => {
                 <Phone className="w-4 h-4 text-amber-400 flex-shrink-0" />
                 <span className="text-stone-300">+91 7014318581</span>
               </div>
-              <div className="flex items-center space-x-3">
-                <Mail className="w-4 h-4 text-amber-400 flex-shrink-0" />
-                <span className="text-stone-300">info@shilpgrah.com</span>
-                <span className="text-stone-300">mihir@shilpgrah.com</span>
+              <div className="flex items-start space-x-3">
+                <Mail className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
+                <div className="flex flex-col">
+                  <span className="text-stone-300">info@shilpgrah.com</span>
+                  <span className="text-stone-300">mihir@shilpgrah.com</span>
+                </div>
               </div>
             </div>
           </div>
@@ -81,7 +130,7 @@ const Footer: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-sm text-stone-400">
-              © 2024 Shilpgrah. All rights reserved.
+              © 2014 Shilpgrah. All rights reserved.
             </div>
             <div className="flex items-center space-x-6 text-xs text-stone-400">
               <span>Handicrafts Export Council Member</span>

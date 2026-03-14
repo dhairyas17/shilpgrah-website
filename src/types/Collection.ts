@@ -16,5 +16,4 @@ export interface Product {
   };
   featured: boolean;
   tags: string[];
-  isBestSeller?: boolean;
 }

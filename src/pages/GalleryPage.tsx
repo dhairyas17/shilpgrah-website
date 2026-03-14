@@ -28,17 +28,17 @@ const GalleryPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-stone-50 pt-20">
       {/* Hero Section */}
-      <section className="py-16 lg:py-24 bg-gradient-to-r from-amber-600 to-amber-700 text-center">
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white mb-4">
+      <section className="py-16 lg:py-24 text-center">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-amber-800 mb-6">
           Our Gallery
         </h1>
-        <p className="text-xl md:text-2xl text-amber-100 max-w-3xl mx-auto leading-relaxed">
+        <p className="text-lg md:text-xl text-black-100 max-w-3xl mx-auto leading-relaxed">
           Explore the craftsmanship and stories behind our authentic Rajasthani handicrafts.
         </p>
       </section>
 
       {/* Gallery Section */}
-      <section className="py-16 lg:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-16 lg:py-0 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {images.map((img, idx) => (
             <div

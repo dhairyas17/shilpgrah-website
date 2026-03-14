@@ -1,76 +1,79 @@
 import React from 'react';
 import { Award, Globe, Users, Truck, Heart, Star, CheckCircle } from 'lucide-react';
+import raj from '../../public/assets/raj.png';
 
 const AboutPage: React.FC = () => {
   const features = [
     {
       icon: <Award className="w-8 h-8" />,
       title: 'Master Craftsmen',
-      description: 'Our skilled artisans have inherited techniques passed down through generations, ensuring authentic Rajasthani craftsmanship in every piece.'
+      description:
+        'Our skilled artisans have inherited techniques passed down through generations, ensuring authentic Rajasthani craftsmanship in every piece.',
     },
     {
       icon: <Globe className="w-8 h-8" />,
       title: 'Global Reach',
-      description: 'Exporting to 50+ countries with trusted shipping partners and customs expertise, bringing Rajasthani heritage worldwide.'
+      description:
+        'Exporting to 20+ countries with trusted shipping partners and customs expertise, bringing Rajasthani heritage worldwide.',
     },
     {
       icon: <Users className="w-8 h-8" />,
       title: 'Personalized Service',
-      description: 'Dedicated support team for custom orders, bulk purchases, and personalized consultation for your specific needs.'
+      description:
+        'Dedicated support team for custom orders, bulk purchases, and personalized consultation for your specific needs.',
     },
     {
       icon: <Truck className="w-8 h-8" />,
       title: 'Secure Delivery',
-      description: 'Professional packaging and insured shipping ensure your valuable handicrafts reach you in perfect condition.'
-    }
+      description:
+        'Professional packaging and insured shipping ensure your valuable handicrafts reach you in perfect condition.',
+    },
   ];
 
   const values = [
     {
       icon: <Heart className="w-6 h-6" />,
       title: 'Authenticity',
-      description: 'Every piece is genuinely handcrafted by traditional artisans using time-honored techniques.'
+      description:
+        'Every piece is genuinely handcrafted by traditional artisans using time-honored techniques.',
     },
     {
       icon: <Star className="w-6 h-6" />,
       title: 'Quality',
-      description: 'We maintain the highest standards in material selection and craftsmanship quality.'
+      description:
+        'We maintain the highest standards in material selection and craftsmanship quality.',
     },
     {
       icon: <CheckCircle className="w-6 h-6" />,
       title: 'Trust',
-      description: 'Building long-term relationships with customers through transparency and reliability.'
-    }
+      description:
+        'Building long-term relationships with customers through transparency and reliability.',
+    },
   ];
 
   const milestones = [
     { year: '2013', event: 'Founded in Jodhpur, Rajasthan' },
     { year: '2018', event: 'Launched online presence' },
     { year: '2020', event: 'First international export to Europe' },
-    { year: '2024', event: 'Reached 20+ countries worldwide' }
+    { year: '2024', event: 'Reached 20+ countries worldwide' },
   ];
 
   return (
-    <div className="min-h-screen bg-stone-50 pt-20">
+    <div className="min-h-screen bg-stone-50 pt-40">
       {/* Hero Section */}
-      <section className="relative py-16 lg:py-24 bg-gradient-to-r from-amber-600 to-amber-700">
+      <section className="relative py-16 lg:py-0">
         <div className="absolute inset-0 opacity-10">
-          <svg
-            className="w-full h-full"
-            viewBox="0 0 100 100"
-            preserveAspectRatio="xMidYMid slice"
-          >
+          <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
             <rect width="100%" height="100%" fill="url(#about-pattern)" />
           </svg>
         </div>
-        
+
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white mb-6">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-amber-800 mb-6">
             Our Heritage Story
           </h1>
-          <p className="text-xl md:text-2xl text-amber-100 max-w-4xl mx-auto leading-relaxed">
-            For nearly four decades, Shilpgrah has been the bridge between Rajasthan's master craftsmen 
-            and discerning customers worldwide, sharing the soul of royal India through authentic handicrafts.
+          <p className="md:text-2xl text-black max-w-7xl mx-auto leading-relaxed">
+          For over a decade, Shilpgrah has brought Rajasthan’s master craftsmanship to customers worldwide.
           </p>
         </div>
       </section>
@@ -79,40 +82,29 @@ const AboutPage: React.FC = () => {
       <section className="py-16 lg:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            {/* Content */}
             <div className="space-y-8">
-              <div>
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-stone-800 mb-6">
-                  Bringing Rajasthan's Royal Heritage to Your World
-                </h2>
-                <p className="text-xl text-stone-600 leading-relaxed mb-6">
-                  Founded in 1985 in the heart of Jodhpur, Shilpgrah began as a small family business with a grand vision: 
-                  to share the magnificent craftsmanship of Rajasthan with the world. What started as a local workshop has 
-                  grown into a globally recognized name in authentic Indian handicrafts.
-                </p>
-                <p className="text-stone-600 leading-relaxed mb-6">
-                  Each piece in our collection is carefully selected from skilled artisans across Rajasthan's historic cities - 
-                  Jodhpur, Jaipur, Udaipur, and beyond. From the intricate Jali work of Jaisalmer to the mirror mosaics of Bikaner, 
-                  we bring you authentic heritage craftsmanship that tells the story of royal India.
-                </p>
-                <p className="text-stone-600 leading-relaxed">
-                  We don't just export products; we share stories, traditions, and the soul of Rajasthan. Every carved detail, 
-                  every inlay pattern, every finish reflects centuries of artistic evolution and cultural heritage.
-                </p>
-              </div>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-stone-800 mb-6">
+                Bringing Rajasthan's Royal Heritage to Your World
+              </h2>
+              <p className="text-stone-600 leading-relaxed mb-6">
+                Founded in 2013 in the heart of Jodhpur, Shilpgrah began as a small family business with a grand vision:
+                to share the magnificent craftsmanship of Rajasthan with the world. What started as a local workshop has
+                grown into a globally recognized name in authentic Indian handicrafts.
+              </p>
+              <p className="text-stone-600 leading-relaxed mb-6">
+                Each piece in our collection is carefully selected from skilled artisans across Rajasthan's historic cities -
+                Jodhpur, Jaipur, Udaipur, and beyond. From the intricate Jali work of Jaisalmer to the mirror mosaics of Bikaner,
+                we bring you authentic heritage craftsmanship that tells the story of royal India.
+              </p>
+              <p className="text-stone-600 leading-relaxed">
+                We don't just export products; we share stories, traditions, and the soul of Rajasthan. Every carved detail,
+                every inlay pattern, every finish reflects centuries of artistic evolution and cultural heritage.
+              </p>
             </div>
-
-            {/* Image */}
             <div className="relative">
               <div className="aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl">
-                <img
-                  src="https://images.pexels.com/photos/1194420/pexels-photo-1194420.jpeg"
-                  alt="Rajasthani craftsman at work"
-                  className="w-full h-full object-cover"
-                />
+                <img src="/assets/raj2.png" alt="Rajasthani craftsman at work" className="w-full h-full object-cover" />
               </div>
-              
-              {/* Decorative Elements */}
               <div className="absolute -top-6 -right-6 w-24 h-24 bg-amber-400/20 rounded-full blur-xl"></div>
               <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-stone-200/30 rounded-full blur-xl"></div>
             </div>
@@ -124,26 +116,19 @@ const AboutPage: React.FC = () => {
       <section className="py-16 lg:py-24 bg-stone-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-stone-800 mb-4">
-              Why Choose Shilpgrah
-            </h2>
-            <p className="text-xl text-stone-600 max-w-3xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-stone-800 mb-4">Why Choose Shilpgrah</h2>
+            <p className="text-xl text-stone-600 max-w-7xl mx-auto">
               Our commitment to authenticity, quality, and customer satisfaction sets us apart in the global handicrafts market
             </p>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => (
               <div key={index} className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <div className="w-16 h-16 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center mb-6">
                   {feature.icon}
                 </div>
-                <h3 className="text-xl font-semibold text-stone-800 mb-4">
-                  {feature.title}
-                </h3>
-                <p className="text-stone-600 leading-relaxed">
-                  {feature.description}
-                </p>
+                <h3 className="text-xl font-semibold text-stone-800 mb-4">{feature.title}</h3>
+                <p className="text-stone-600 leading-relaxed">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -154,31 +139,118 @@ const AboutPage: React.FC = () => {
       <section className="py-16 lg:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-stone-800 mb-4">
-              Our Core Values
-            </h2>
-            <p className="text-xl text-stone-600 max-w-3xl mx-auto">
-              The principles that guide everything we do
-            </p>
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-stone-800 mb-4">Our Core Values</h2>
+            <p className="text-xl text-stone-600 max-w-3xl mx-auto">The principles that guide everything we do</p>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {values.map((value, index) => (
               <div key={index} className="text-center">
                 <div className="w-12 h-12 bg-amber-600 text-white rounded-full flex items-center justify-center mx-auto mb-4">
                   {value.icon}
                 </div>
-                <h3 className="text-xl font-semibold text-stone-800 mb-3">
-                  {value.title}
-                </h3>
-                <p className="text-stone-600 leading-relaxed">
-                  {value.description}
-                </p>
+                <h3 className="text-xl font-semibold text-stone-800 mb-3">{value.title}</h3>
+                <p className="text-stone-600 leading-relaxed">{value.description}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
+
+      {/* --- NEW SECTIONS ADDED BELOW --- */}
+
+      {/* Timber Milling and Seasoning */}
+      <section className="py-20 bg-stone-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl md:text-4xl font-serif font-bold text-stone-800 mb-10">Timber Milling and Seasoning</h2>
+          <div className="grid lg:grid-cols-2 gap-10 items-start">
+            <div className="space-y-6 text-stone-700 leading-relaxed">
+              <p>
+                The soul of any wooden furniture or decorative accessory is its base – solid wood. We know its importance
+                and at Shilpgrah, we’ve invested in basic kilns and government-registered sawmills to make the most
+                of each wood log while reducing our environmental impact.
+              </p>
+              <p>
+                Our investment in effective machinery helps speed up bulk production while preserving the handmade touch.
+                Jodhpur’s artisan legacy shines through every piece, blending tradition with efficient manufacturing.
+              </p>
+              <p>
+                We bring consistency in batch manufacturing while retaining unique handmade appeal.
+              </p>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <img src="/assets/timber.jpg" alt="Timber cutting" className="rounded-xl shadow-md object-cover h-full" />
+              <img src="/assets/timber2.png" alt="Wood seasoning" className="rounded-xl shadow-md object-cover h-[300px]" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Finishing Processes */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl md:text-4xl font-serif font-bold text-stone-800 mb-10">
+            Finishing Processes
+          </h2>
+          <div className="grid lg:grid-cols-2 gap-10 items-start">
+            {/* Images on the left */}
+            <div className="grid grid-cols-2 gap-4">
+              <img src="/assets/spraying.jpg" alt="Wood polishing" className="rounded-xl shadow-md object-cover h-[]" />
+              <img src="/assets/finishing.jpg" alt="Furniture finishing" className="rounded-xl shadow-md object-cover h-full" />
+            </div>
+
+            {/* Updated content on the right */}
+            <div className="space-y-4 text-stone-700 leading-relaxed">
+              <p>
+                Once the raw wood is transformed into its desired form, each piece goes through a detailed finishing process, a vital step in adding both visual and functional value. Our finishing line ensures every product reflects the highest level of craftsmanship.
+              </p>
+              <p>
+                Skilled artisans combine traditional and modern methods to enhance the natural character of the wood. Techniques like hand sanding, wire brushing, fire scorching, and custom staining are used to elevate the texture and depth of each surface.
+              </p>
+              <p>
+                Every batch is meticulously inspected at multiple stages by experienced quality supervisors to maintain consistency, durability, and long-lasting performance, whether the product is meant for indoor elegance or outdoor endurance.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      {/* Packaging and Container Stuffing */}
+      <section className="py-20 bg-stone-50">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 className="text-3xl md:text-4xl font-serif font-bold text-stone-800 mb-10">
+      Packaging and Container Stuffing
+    </h2>
+    <div className="grid lg:grid-cols-2 gap-10 items-start">
+      {/* Content on the left */}
+      <div className="space-y-4 text-stone-700 leading-relaxed">
+        <p>
+          Once products pass the final stage of third-party inspection, they are carefully prepared for global dispatch using eco-friendly and export-compliant packaging materials. We prioritize safety, sustainability, and efficiency at every stage of the packing process.
+        </p>
+        <p>
+          Our team uses recyclable PPE, high-strength cartons, edge protectors, and moisture-control solutions to ensure each shipment withstands long-distance transit without compromising the product integrity. Packaging is customized based on material type, weight, and destination.
+        </p>
+        <p>
+          Every consignment is stuffed directly at our manufacturing facility, eliminating intermediate handling and ensuring optimal space utilization in containers. This leads to damage-free delivery and cost-effective logistics for our international clients.
+        </p>
+      </div>
+
+      {/* Images on the right */}
+      <div className="grid grid-cols-2 gap-4">
+        <img
+          src="/assets/packing.jpg"
+          alt="Packing process"
+          className="rounded-xl shadow-md object-cover h-[350px]"
+        />
+        <img
+          src="/assets/loading.jpg"
+          alt="Container loading"
+          className="rounded-xl shadow-md object-cover h-full"
+        />
+      </div>
+    </div>
+  </div>
+</section>
 
       {/* Timeline Section */}
       <section className="py-16 lg:py-24 bg-stone-50">
@@ -187,7 +259,7 @@ const AboutPage: React.FC = () => {
             <h2 className="text-3xl md:text-4xl font-serif font-bold text-stone-800 mb-4">
               Our Journey
             </h2>
-            <p className="text-xl text-stone-600 max-w-3xl mx-auto">
+            <p className="text-xl text-stone-600 max-w-7xl mx-auto">
               Key milestones in our four-decade journey of bringing Rajasthani heritage to the world
             </p>
           </div>
@@ -228,20 +300,20 @@ const AboutPage: React.FC = () => {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-white mb-2">12+</div>
-              <div className="text-amber-100">Years of Excellence</div>
+              <div className="text-4xl md:text-5xl font-bold text-white mb-2">286</div>
+              <div className="text-amber-100">Statisfied Clients</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-white mb-2">13+</div>
-              <div className="text-amber-100">Countries Served</div>
+              <div className="text-4xl md:text-5xl font-bold text-white mb-2">187</div>
+              <div className="text-amber-100">Finished projects</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-white mb-2">500+</div>
-              <div className="text-amber-100">Happy Customers</div>
+              <div className="text-4xl md:text-5xl font-bold text-white mb-2">29</div>
+              <div className="text-amber-100">Team Members</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-white mb-2">300+</div>
-              <div className="text-amber-100">Unique Products</div>
+              <div className="text-4xl md:text-5xl font-bold text-white mb-2">20+</div>
+              <div className="text-amber-100">countries serverd</div>
             </div>
           </div>
         </div>
@@ -249,7 +321,7 @@ const AboutPage: React.FC = () => {
 
       {/* CTA Section */}
       <section className="py-16 lg:py-24 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-serif font-bold text-stone-800 mb-6">
             Ready to Experience Authentic Rajasthani Craftsmanship?
           </h2>

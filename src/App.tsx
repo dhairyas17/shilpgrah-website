@@ -12,7 +12,9 @@ import WishlistPage from './pages/WishlistPage';
 import GalleryPage from './pages/GalleryPage';
 import QuotePage from './pages/QuotePage';
 import QuoteRequestPage from './pages/QuoteRequestPage';
-import CollectionPage from './pages/collections';
+// import ShopPage1 from './pages/ShopPage1';
+// import ShopPage1 from './pages/CollectionsPage';
+import CollectionPage from './pages/CollectionPage';
 
 function App() {
   return (
@@ -26,7 +28,10 @@ function App() {
                 <Route path="/" element={<HomePage />} />
                 <Route path="/shop" element={<ShopPage />} />
                 <Route path="/shop/:category" element={<ShopPage />} />
-                <Route path="/collections/:category" element={<CollectionPage/>} />
+                <Route path="/collection" element={<CollectionPage />} />
+                <Route path="/collection/:category" element={<CollectionPage />} />
+                
+                {/* <Route path="/collections/:category" element={<ShopPage1/>} /> */}
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/contact" element={<ContactPage />} />
                 <Route path="/wishlist" element={<WishlistPage />} />
