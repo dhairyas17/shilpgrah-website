@@ -20,7 +20,7 @@ const Header: React.FC = () => {
     { name: 'Contact', href: '/contact' },
   ];
 
-  const isHome = location.pathname === '/';
+  const isHome = location.pathname === '/contact';
 
   // Show header only at top
   useEffect(() => {
@@ -66,7 +66,7 @@ const Header: React.FC = () => {
               const linkColor = isActive
                 ? 'text-amber-800'
                 : isHome
-                ? 'text-black'
+                ? 'text-white'
                 : 'text-black';
               return (
                 <Link
@@ -84,7 +84,7 @@ const Header: React.FC = () => {
           <div className="hidden lg:flex items-center space-x-4">
             <Link
               to="/wishlist"
-              className={'p-2 relative hover:text-amber-700 transition-colors text-black'}
+              className={`p-2 relative hover:text-amber-700 transition-colors ${isHome ? 'text-white' : 'text-black'}`}
             >
               <Heart className="w-5 h-5" />
               {wishlist.length > 0 && (
@@ -95,7 +95,7 @@ const Header: React.FC = () => {
             </Link>
             <Link
               to="/quote"
-              className={`p-2 relative hover:text-amber-700 transition-colors text-black`}
+              className={`p-2 relative hover:text-amber-700 transition-colors ${isHome ? 'text-white' : 'text-black'}`}
             >
               <ShoppingBag className="w-5 h-5" />
               {getTotalItems() > 0 && (
@@ -125,7 +125,7 @@ const Header: React.FC = () => {
             <div className="px-4 py-4 space-y-4">
               {navigation.map((item) => {
                 const isActive = location.pathname === item.href;
-                const linkColor = isActive ? 'text-amber-800' : isHome ? 'text-black' : 'text-black';
+                const linkColor = isActive ? 'text-amber-800' : isHome ? 'text-white' : 'text-black';
                 return (
                   <Link
                     key={item.name}
@@ -141,7 +141,7 @@ const Header: React.FC = () => {
                 <Link
                   to="/wishlist"
                   onClick={() => setIsMenuOpen(false)}
-                  className={`flex items-center space-x-2 hover:text-amber-700 ${isHome ? 'text-black' : 'text-black'}`}
+                  className={`flex items-center space-x-2 hover:text-amber-700 ${isHome ? 'text-white' : 'text-black'}`}
                 >
                   <Heart className="w-5 h-5" />
                   <span>Wishlist ({wishlist.length})</span>
@@ -149,7 +149,7 @@ const Header: React.FC = () => {
                 <Link
                   to="/quote"
                   onClick={() => setIsMenuOpen(false)}
-                  className={`flex items-center space-x-2 hover:text-amber-700 ${isHome ? 'text-black' : 'text-black'}`}
+                  className={`flex items-center space-x-2 hover:text-amber-700 ${isHome ? 'text-white' : 'text-black'}`}
                 >
                   <ShoppingBag className="w-5 h-5" />
                   <span>Quote ({getTotalItems()})</span>
