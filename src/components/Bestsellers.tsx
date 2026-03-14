@@ -169,17 +169,18 @@ const ProductDetailModal: React.FC<ModalProps> = ({ product, siblingImgs, onClos
 
   return (
     <>
-      <div onClick={e => e.target === e.currentTarget && onClose()}
-        style={{ position: 'fixed', inset: 0, zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem', background: 'rgba(20,12,4,0.75)', backdropFilter: 'blur(8px)', opacity: visible ? 1 : 0, transition: 'opacity 0.3s ease' }}>
+      <div onClick={e => e.target === e.currentTarget && onClose()} className="bs-backdrop"
+        style={{ position: 'fixed', inset: 0, zIndex: 9999, display: 'flex', alignItems: 'flex-end', justifyContent: 'center', padding: 0, background: 'rgba(20,12,4,0.75)', backdropFilter: 'blur(8px)', opacity: visible ? 1 : 0, transition: 'opacity 0.3s ease' }}>
+        <div className="bs-shell" style={{ position: 'relative', width: '100%', maxWidth: '960px', borderRadius: '18px 18px 0 0', overflow: 'hidden', display: 'flex', flexDirection: 'column', maxHeight: '95dvh', boxShadow: '0 -20px 60px rgba(0,0,0,0.3)', transform: visible ? 'translateY(0)' : 'translateY(40px)', transition: 'transform 0.45s cubic-bezier(0.16,1,0.3,1)' }}>
         <div className="bs-modal"
-          style={{ position: 'relative', width: '100%', maxWidth: '960px', maxHeight: '92vh', borderRadius: '18px', overflow: 'hidden', display: 'grid', gridTemplateColumns: '1fr 1fr', boxShadow: '0 40px 100px rgba(0,0,0,0.4)', transform: visible ? 'translateY(0) scale(1)' : 'translateY(30px) scale(0.96)', transition: 'transform 0.45s cubic-bezier(0.16,1,0.3,1)' }}>
+          style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', flex: 1, minHeight: 0, overflow: 'hidden' }}>
 
           {/* ══ LEFT — WHITE ══ */}
           <div style={{ background: '#fff', display: 'flex', flexDirection: 'column' }}>
 
             {/* Hero image */}
             <div onClick={() => openLb(imgIdx)}
-              style={{ flex: 1, minHeight: '320px', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fafaf9', cursor: 'zoom-in', overflow: 'hidden' }}>
+              style={{ flex: 1, minHeight: '260px', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fafaf9', cursor: 'zoom-in', overflow: 'hidden' }}>
               <img key={imgIdx} src={imgs[imgIdx]} alt={product.name}
                 style={{ maxWidth: '85%', maxHeight: '310px', objectFit: 'contain', animation: 'fpmFade 0.22s ease', userSelect: 'none' }} />
               {/* Zoom badge */}
@@ -277,11 +278,11 @@ const ProductDetailModal: React.FC<ModalProps> = ({ product, siblingImgs, onClos
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
               <span style={{ fontSize: '0.72rem', color: '#78716c', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', fontFamily: 'system-ui, sans-serif' }}>Qty</span>
               <div style={{ display: 'flex', alignItems: 'center', border: '1.5px solid rgba(217,119,6,0.35)', borderRadius: '8px', overflow: 'hidden', background: 'rgba(255,255,255,0.72)' }}>
-                <button onClick={() => setQty(q => Math.max(1, q - 1))} style={{ width: '2.1rem', height: '2.1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', cursor: 'pointer', color: '#78716c' }}>
+                <button onClick={() => setQty(q => Math.max(1, q - 1))} style={{ width: '2.4rem', height: '2.4rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', cursor: 'pointer', color: '#78716c' }}>
                   <Minus style={{ width: '0.75rem', height: '0.75rem' }} />
                 </button>
                 <span style={{ width: '2.25rem', textAlign: 'center', fontSize: '0.9rem', color: '#1c1917', fontWeight: 700, fontFamily: 'Georgia, serif' }}>{qty}</span>
-                <button onClick={() => setQty(q => q + 1)} style={{ width: '2.1rem', height: '2.1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', cursor: 'pointer', color: '#78716c' }}>
+                <button onClick={() => setQty(q => q + 1)} style={{ width: '2.4rem', height: '2.4rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', cursor: 'pointer', color: '#78716c' }}>
                   <Plus style={{ width: '0.75rem', height: '0.75rem' }} />
                 </button>
               </div>
@@ -316,7 +317,8 @@ const ProductDetailModal: React.FC<ModalProps> = ({ product, siblingImgs, onClos
           >
             <X style={{ width: '0.85rem', height: '0.85rem' }} />
           </button>
-        </div>
+        </div>{/* end bs-modal grid */}
+        </div>{/* end bs-shell */}
       </div>
 
       {lightbox && (
@@ -327,7 +329,15 @@ const ProductDetailModal: React.FC<ModalProps> = ({ product, siblingImgs, onClos
         @keyframes fpmFade { from { opacity:0; transform:scale(0.97); } to { opacity:1; transform:scale(1); } }
         @keyframes lbIn    { from { opacity:0; } to { opacity:1; } }
         @keyframes lbImg   { from { opacity:0; transform:scale(0.94); } to { opacity:1; transform:scale(1); } }
-        @media (max-width: 640px) { .bs-modal { grid-template-columns: 1fr !important; } }
+        @media (min-width: 641px) {
+          .bs-backdrop { align-items: center !important; padding: 1rem !important; }
+          .bs-shell    { border-radius: 18px !important; max-height: 92vh !important; }
+        }
+        @media (max-width: 640px) {
+          .bs-modal { grid-template-columns: 1fr !important; overflow-y: auto; }
+          .bs-modal > div:first-child { border-right: none !important; border-bottom: 1px solid #f0ece4; }
+          .bs-modal > div:first-child > div:first-child { min-height: 230px !important; max-height: 52vw !important; }
+        }
       `}</style>
     </>
   );

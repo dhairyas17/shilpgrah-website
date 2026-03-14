@@ -2,13 +2,21 @@ import React, { useMemo, useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import CollectionCard from "../components/CollectionCards";
 import { products, getProductsBySubcategory, categories } from "../data/products";
-import { ArrowLeft, LayoutGrid, Grid3X3 } from "lucide-react";
+import { ArrowLeft, LayoutGrid, Grid3X3, ChevronDown } from "lucide-react";
 
 const CollectionPage: React.FC = () => {
   const { category } = useParams();
   const navigate = useNavigate();
   const [sortBy, setSortBy] = useState<"default" | "name-asc" | "name-desc">("default");
-  const [cols, setCols] = useState<3 | 4>(4);
+  const [cols, setCols] = useState<2 | 3>(2);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    const setDefaultCols = () => setCols(window.innerWidth >= 768 ? 3 : 2);
+    setDefaultCols();
+    window.addEventListener('resize', setDefaultCols);
+    return () => window.removeEventListener('resize', setDefaultCols);
+  }, []);
 
   const rawProducts = useMemo(
     () => (category ? getProductsBySubcategory(category) : products),
@@ -39,7 +47,7 @@ const CollectionPage: React.FC = () => {
     <div className="min-h-screen bg-gray-50 mt-3">
 
       {/* ── BANNER ── */}
-      <div className="relative bg-white border-b border-stone-100" style={{ paddingTop: "7.5rem", paddingBottom: "3rem" }}>
+      <div className="relative bg-white border-b border-stone-100" style={{ paddingTop: "7rem", paddingBottom: "2.5rem" }}>
         {/* Warm gradient backdrop */}
         <div
           className="absolute inset-0 pointer-events-none"
@@ -77,7 +85,34 @@ const CollectionPage: React.FC = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-10">
+
+        {/* ── MOBILE CATEGORY DROPDOWN ── */}
+        <div className="block lg:hidden mb-5">
+          <div style={{ position: 'relative' }}>
+            <button onClick={() => setSidebarOpen(!sidebarOpen)}
+              style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem 1rem', background: '#fafaf9', border: '1.5px solid #e7e5e4', borderRadius: '10px', cursor: 'pointer', fontFamily: 'system-ui, sans-serif', fontSize: '0.85rem', fontWeight: 600, color: '#1c1917' }}>
+              <span>Browse: <span style={{ color: '#d97706' }}>{category ? (categories[category as keyof typeof categories] || category) : 'All Collections'}</span></span>
+              <ChevronDown style={{ width: '1rem', height: '1rem', transform: sidebarOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
+            </button>
+            {sidebarOpen && (
+              <div style={{ position: 'absolute', top: 'calc(100% + 4px)', left: 0, right: 0, background: 'white', border: '1.5px solid #e7e5e4', borderRadius: '10px', zIndex: 30, boxShadow: '0 8px 32px rgba(0,0,0,0.12)', maxHeight: '60vh', overflowY: 'auto' }}>
+                <Link to="/collection" onClick={() => setSidebarOpen(false)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem 1rem', textDecoration: 'none', background: !category ? '#fef3c7' : 'transparent', color: !category ? '#92400e' : '#1c1917', fontFamily: 'system-ui, sans-serif', fontSize: '0.85rem', fontWeight: !category ? 700 : 500, borderBottom: '1px solid #f5f0e8' }}>
+                  <span>All Collections</span><span style={{ fontSize: '0.72rem', color: '#a8a29e' }}>{products.length}</span>
+                </Link>
+                {Object.entries(categories).map(([key, name]) => {
+                  const count = getProductsBySubcategory(key).length;
+                  const active = category === key;
+                  return (
+                    <Link key={key} to={`/collection/${key}`} onClick={() => setSidebarOpen(false)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem 1rem', textDecoration: 'none', background: active ? '#fef3c7' : 'transparent', color: active ? '#92400e' : '#1c1917', fontFamily: 'system-ui, sans-serif', fontSize: '0.85rem', fontWeight: active ? 700 : 500, borderBottom: '1px solid #f5f0e8' }}>
+                      <span>{name}</span><span style={{ fontSize: '0.72rem', color: active ? '#d97706' : '#a8a29e' }}>{count}</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </div>
 
         {/* ── CATEGORY GRID ── */}
         {!category && (
@@ -185,7 +220,7 @@ const CollectionPage: React.FC = () => {
 
                 {/* Grid toggle */}
                 <div className="flex rounded-lg overflow-hidden border border-stone-200">
-                  {([4, 3] as const).map((c, i) => (
+                  {([3, 2] as const).map((c, i) => (
                     <button
                       key={c}
                       onClick={() => setCols(c)}
@@ -210,7 +245,7 @@ const CollectionPage: React.FC = () => {
               style={{
                 display: "grid",
                 gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`,
-                gap: "1.5rem",
+                gap: "clamp(0.75rem, 2vw, 1.5rem)",
               }}
             >
               {filteredProducts.map((product, i) => (

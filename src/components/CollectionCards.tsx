@@ -12,7 +12,7 @@ interface CollectionCardProps {
 
 const CollectionCard: React.FC<CollectionCardProps> = ({ product }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
+  const [isHovered, setIsHovered]     = useState(false);
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const { addToQuote } = useQuote();
   const wishlisted = isInWishlist(product.id);
@@ -46,7 +46,7 @@ const CollectionCard: React.FC<CollectionCardProps> = ({ product }) => {
             }}
           />
 
-          {/* Warm gradient veil */}
+          {/* Gradient veil */}
           <div
             className="absolute inset-0"
             style={{
@@ -66,10 +66,10 @@ const CollectionCard: React.FC<CollectionCardProps> = ({ product }) => {
             </div>
           )}
 
-          {/* Wishlist — top right */}
+          {/* Wishlist — hover/active only */}
           <button
-            onClick={(e) => { e.stopPropagation(); wishlisted ? removeFromWishlist(product.id) : addToWishlist(product); }}
-            className="absolute top-3 right-3 rounded-full flex items-center justify-center"
+            onClick={e => { e.stopPropagation(); wishlisted ? removeFromWishlist(product.id) : addToWishlist(product); }}
+            className="absolute top-3 right-3 rounded-full flex items-center justify-center cc-wishlist"
             style={{
               width: '2.1rem', height: '2.1rem',
               background: wishlisted ? '#ef4444' : 'rgba(255,255,255,0.88)',
@@ -84,9 +84,9 @@ const CollectionCard: React.FC<CollectionCardProps> = ({ product }) => {
             <Heart className="w-3.5 h-3.5" style={{ fill: wishlisted ? 'currentColor' : 'none', strokeWidth: 2 }} />
           </button>
 
-          {/* Bottom slide-up action bar */}
+          {/* Action bar — hover only on all screens */}
           <div
-            className="absolute bottom-0 left-0 right-0 flex"
+            className="absolute bottom-0 left-0 right-0 flex cc-action-bar"
             style={{
               opacity: isHovered ? 1 : 0,
               transform: isHovered ? 'translateY(0)' : 'translateY(100%)',
@@ -94,24 +94,23 @@ const CollectionCard: React.FC<CollectionCardProps> = ({ product }) => {
             }}
           >
             <button
-              onClick={(e) => { e.stopPropagation(); setIsModalOpen(true); }}
+              onClick={e => { e.stopPropagation(); setIsModalOpen(true); }}
               className="flex-1 flex items-center justify-center gap-1.5 py-2.5"
               style={{
-                background: 'rgba(255,255,255,0.95)',
-                color: '#1c1917',
+                background: 'rgba(255,255,255,0.95)', color: '#1c1917',
                 fontSize: '0.65rem', fontWeight: 500,
                 letterSpacing: '0.12em', textTransform: 'uppercase',
                 borderRight: '1px solid rgba(180,83,9,0.15)',
                 border: 'none', cursor: 'pointer',
               }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = '#fffbeb'; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.95)'; }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#fffbeb'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.95)'; }}
             >
               <Eye className="w-3.5 h-3.5 text-amber-700" />
               <span>Quick View</span>
             </button>
             <button
-              onClick={(e) => { e.stopPropagation(); addToQuote(product); }}
+              onClick={e => { e.stopPropagation(); addToQuote(product); }}
               className="flex-1 flex items-center justify-center gap-1.5 py-2.5"
               style={{
                 background: '#b45309', color: 'white',
@@ -119,17 +118,17 @@ const CollectionCard: React.FC<CollectionCardProps> = ({ product }) => {
                 letterSpacing: '0.12em', textTransform: 'uppercase',
                 border: 'none', cursor: 'pointer',
               }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = '#92400e'; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = '#b45309'; }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#92400e'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#b45309'; }}
             >
               <ShoppingBag className="w-3.5 h-3.5" />
-              <span>Add to Quote</span>
+              <span>Get Quote</span>
             </button>
           </div>
         </div>
 
         {/* ── CONTENT ── */}
-        <div className="p-5">
+        <div className="p-5 cc-content">
           <h3
             className="font-serif line-clamp-2 leading-snug mb-1.5"
             style={{
@@ -151,21 +150,8 @@ const CollectionCard: React.FC<CollectionCardProps> = ({ product }) => {
               <span className="text-stone-300 text-xs">·</span>
               <span className="text-stone-400 text-xs">{product.finish}</span>
             </div>
-            <div
-              style={{
-                fontSize: '0.65rem', fontWeight: 500,
-                letterSpacing: '0.1em', textTransform: 'uppercase',
-                color: '#b45309',
-                opacity: isHovered ? 1 : 0,
-                transform: isHovered ? 'translateX(0)' : 'translateX(-4px)',
-                transition: 'all 0.3s ease',
-              }}
-            >
-              Explore →
-            </div>
           </div>
 
-          {/* Animated amber accent line */}
           <div
             className="mt-4"
             style={{
@@ -180,6 +166,19 @@ const CollectionCard: React.FC<CollectionCardProps> = ({ product }) => {
       </div>
 
       <CollectionModal product={product} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+
+      <style>{`
+        @media (max-width: 640px) {
+          /* Hide action bar — whole card tap opens modal */
+          .cc-action-bar { display: none !important; }
+          /* Wishlist always visible when saved */
+          .cc-wishlist { opacity: ${wishlisted ? 1 : 0} !important; }
+          /* Tighter content */
+          .cc-content { padding: 0.65rem 0.75rem 0.8rem !important; }
+          .cc-content h3 { font-size: 0.85rem !important; margin-bottom: 0.2rem !important; }
+          .cc-content p  { font-size: 0.72rem !important; margin-bottom: 0.35rem !important; }
+        }
+      `}</style>
     </>
   );
 };

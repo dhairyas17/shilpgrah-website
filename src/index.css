@@ -60,3 +60,100 @@ img {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
 }
+/* ─────────────────────────────────────────
+   MOBILE RESPONSIVE ADDITIONS
+   Add these to the bottom of your index.css
+   ───────────────────────────────────────── */
+ 
+/* Modals: single column on small screens */
+@media (max-width: 640px) {
+  .pm-inner,
+  .cm-inner,
+  .bs-modal {
+    grid-template-columns: 1fr !important;
+    max-height: 95vh !important;
+    overflow-y: auto !important;
+    border-radius: 12px !important;
+  }
+ 
+  /* On mobile, modals should fill more of the screen */
+  .pm-inner > div:first-child,
+  .cm-inner > div:first-child,
+  .bs-modal > div:first-child {
+    min-height: 280px !important;
+    max-height: 50vw !important;
+  }
+}
+ 
+/* Gallery: 2 columns on mobile */
+@media (max-width: 768px) {
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    grid-auto-rows: 160px !important;
+  }
+}
+ 
+/* Prevent horizontal overflow everywhere */
+html, body {
+  overflow-x: hidden;
+}
+ 
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+ 
+/* Swiper pagination fix on mobile */
+.swiper-pagination-bullet {
+  width: 6px !important;
+  height: 6px !important;
+}
+ 
+/* Sticky sidebar offset accounts for header + topbar */
+@media (max-width: 1024px) {
+  .sticky {
+    position: relative !important;
+    top: auto !important;
+  }
+}
+ 
+/* Make iframe maps responsive */
+iframe {
+  max-width: 100%;
+}
+ 
+/* Touch-friendly tap targets */
+@media (max-width: 768px) {
+  button, a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+ 
+  /* Override for icon-only elements */
+  button.icon-only, a.icon-only {
+    min-height: 36px;
+    min-width: 36px;
+  }
+}
+ 
+/* Testimonials: 1 col on mobile */
+@media (max-width: 768px) {
+  .testimonials-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+ 
+/* Quote page: full width on mobile */
+@media (max-width: 1024px) {
+  .quote-sidebar {
+    display: none;
+  }
+}
+ 
+/* About page image on mobile */
+@media (max-width: 1024px) {
+  .about-image {
+    aspect-ratio: 16/9 !important;
+  }
+}
+ 

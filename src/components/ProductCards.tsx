@@ -7,7 +7,7 @@ import ProductModal from './ProductModal';
 
 const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
+  const [isHovered, setIsHovered]     = useState(false);
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const { addToQuote } = useQuote();
   const wishlisted = isInWishlist(product.id);
@@ -61,10 +61,10 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
             </div>
           )}
 
-          {/* Wishlist — always visible if active, fades in on hover */}
+          {/* Wishlist */}
           <button
-            onClick={(e) => { e.stopPropagation(); wishlisted ? removeFromWishlist(product.id) : addToWishlist(product); }}
-            className="absolute top-3 right-3 rounded-full transition-all duration-200 flex items-center justify-center"
+            onClick={e => { e.stopPropagation(); wishlisted ? removeFromWishlist(product.id) : addToWishlist(product); }}
+            className="absolute top-3 right-3 rounded-full transition-all duration-200 flex items-center justify-center pc-wishlist"
             style={{
               width: '2.1rem', height: '2.1rem',
               background: wishlisted ? '#ef4444' : 'rgba(255,255,255,0.88)',
@@ -79,9 +79,9 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
             <Heart className="w-3.5 h-3.5" style={{ fill: wishlisted ? 'currentColor' : 'none', strokeWidth: 2 }} />
           </button>
 
-          {/* Bottom action bar — slides up on hover */}
+          {/* Action bar — hover only on all screens */}
           <div
-            className="absolute bottom-0 left-0 right-0 flex"
+            className="absolute bottom-0 left-0 right-0 flex pc-action-bar"
             style={{
               opacity: isHovered ? 1 : 0,
               transform: isHovered ? 'translateY(0)' : 'translateY(100%)',
@@ -89,37 +89,30 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
             }}
           >
             <button
-              onClick={(e) => { e.stopPropagation(); setIsModalOpen(true); }}
+              onClick={e => { e.stopPropagation(); setIsModalOpen(true); }}
               className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-stone-800 hover:bg-amber-50 transition-colors duration-150"
               style={{
                 background: 'rgba(255,255,255,0.95)',
-                fontSize: '0.65rem',
-                fontWeight: 500,
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
+                fontSize: '0.65rem', fontWeight: 500,
+                letterSpacing: '0.12em', textTransform: 'uppercase',
                 borderRight: '1px solid rgba(180,83,9,0.15)',
-                border: 'none',
-                cursor: 'pointer',
+                border: 'none', cursor: 'pointer',
               }}
             >
               <Eye className="w-3.5 h-3.5 text-amber-700" />
               <span>Quick View</span>
             </button>
             <button
-              onClick={(e) => { e.stopPropagation(); addToQuote(product); }}
+              onClick={e => { e.stopPropagation(); addToQuote(product); }}
               className="flex-1 flex items-center justify-center gap-1.5 py-2.5 transition-colors duration-150"
               style={{
-                background: '#b45309',
-                color: 'white',
-                fontSize: '0.65rem',
-                fontWeight: 500,
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                border: 'none',
-                cursor: 'pointer',
+                background: '#b45309', color: 'white',
+                fontSize: '0.65rem', fontWeight: 500,
+                letterSpacing: '0.12em', textTransform: 'uppercase',
+                border: 'none', cursor: 'pointer',
               }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = '#92400e'; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = '#b45309'; }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#92400e'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#b45309'; }}
             >
               <ShoppingBag className="w-3.5 h-3.5" />
               <span>Add to Quote</span>
@@ -128,8 +121,7 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
         </div>
 
         {/* ── CONTENT ── */}
-        <div className="p-5">
-          {/* Title */}
+        <div className="p-5 pc-content">
           <h3
             className="font-serif text-stone-800 mb-1.5 line-clamp-2 leading-snug"
             style={{ fontSize: '1.05rem', fontWeight: 600, transition: 'color 0.2s', color: isHovered ? '#92400e' : '#1c1917' }}
@@ -137,43 +129,19 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
             {product.name}
           </h3>
 
-          {/* Short desc */}
           <p className="text-stone-500 text-sm mb-4 line-clamp-2 leading-relaxed" style={{ fontSize: '0.8rem' }}>
             {product.shortDescription}
           </p>
 
-          {/* Meta row */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1.5">
-              <span
-                className="inline-block w-1.5 h-1.5 rounded-full"
-                style={{ background: '#d97706' }}
-              />
-              <span className="text-stone-500 text-xs font-medium tracking-wide">
-                {product.material}
-              </span>
+              <span className="inline-block w-1.5 h-1.5 rounded-full" style={{ background: '#d97706' }} />
+              <span className="text-stone-500 text-xs font-medium tracking-wide">{product.material}</span>
               <span className="text-stone-300 text-xs">·</span>
               <span className="text-stone-400 text-xs">{product.finish}</span>
             </div>
-
-            {/* Animated arrow */}
-            <div
-              className="flex items-center gap-1 text-amber-700 transition-all duration-300"
-              style={{
-                fontSize: '0.65rem',
-                fontWeight: 500,
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase',
-                opacity: isHovered ? 1 : 0,
-                transform: isHovered ? 'translateX(0)' : 'translateX(-4px)',
-              }}
-            >
-              <span>Explore</span>
-              <span>→</span>
-            </div>
           </div>
 
-          {/* Bottom accent line */}
           <div
             className="mt-4"
             style={{
@@ -188,6 +156,17 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
       </div>
 
       <ProductModal product={product} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+
+      <style>{`
+        @media (max-width: 640px) {
+          /* Hide action bar — tapping the card opens the modal */
+          .pc-action-bar { display: none !important; }
+          /* Tighter content */
+          .pc-content { padding: 0.65rem 0.75rem 0.8rem !important; }
+          .pc-content h3 { font-size: 0.85rem !important; margin-bottom: 0.2rem !important; }
+          .pc-content p  { font-size: 0.72rem !important; margin-bottom: 0.35rem !important; }
+        }
+      `}</style>
     </>
   );
 };
