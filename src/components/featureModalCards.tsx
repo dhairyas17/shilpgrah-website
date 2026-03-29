@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Heart, ShoppingBag, Eye } from 'lucide-react';
+import { Heart, ShoppingBag } from 'lucide-react';
 import { Product } from '../types/Product';
 import { useWishlist } from '../contexts/WishlistContext';
 import { useQuote } from '../contexts/QuoteContext';
-import ProductModal from './ProductModal';
 
 interface ProductCardProps {
   product: Product;
@@ -11,8 +10,7 @@ interface ProductCardProps {
 }
 
 const FeaturedProductCard: React.FC<ProductCardProps> = ({ product }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isHovered, setIsHovered]     = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const { addToQuote } = useQuote();
   const wishlisted = isInWishlist(product.id);
@@ -31,7 +29,6 @@ const FeaturedProductCard: React.FC<ProductCardProps> = ({ product }) => {
         }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        onClick={() => setIsModalOpen(true)}
       >
         {/* ── IMAGE ── */}
         <div className="relative overflow-hidden bg-stone-100" style={{ aspectRatio: '4/3' }}>
@@ -68,7 +65,10 @@ const FeaturedProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
           {/* Wishlist — hover/active only */}
           <button
-            onClick={e => { e.stopPropagation(); wishlisted ? removeFromWishlist(product.id) : addToWishlist(product); }}
+            onClick={e => {
+              e.stopPropagation();
+              wishlisted ? removeFromWishlist(product.id) : addToWishlist(product);
+            }}
             className="absolute top-3 right-3 rounded-full flex items-center justify-center fpc-wishlist"
             style={{
               width: '2.1rem', height: '2.1rem',
@@ -84,7 +84,7 @@ const FeaturedProductCard: React.FC<ProductCardProps> = ({ product }) => {
             <Heart className="w-3.5 h-3.5" style={{ fill: wishlisted ? 'currentColor' : 'none', strokeWidth: 2 }} />
           </button>
 
-          {/* Action bar — hover only on all screens */}
+          {/* Action bar — hover only */}
           <div
             className="absolute bottom-0 left-0 right-0 flex fpc-action-bar"
             style={{
@@ -94,23 +94,10 @@ const FeaturedProductCard: React.FC<ProductCardProps> = ({ product }) => {
             }}
           >
             <button
-              onClick={e => { e.stopPropagation(); setIsModalOpen(true); }}
-              className="flex-1 flex items-center justify-center gap-1.5 py-2.5"
-              style={{
-                background: 'rgba(255,255,255,0.95)', color: '#1c1917',
-                fontSize: '0.65rem', fontWeight: 500,
-                letterSpacing: '0.12em', textTransform: 'uppercase',
-                borderRight: '1px solid rgba(180,83,9,0.15)',
-                border: 'none', cursor: 'pointer',
+              onClick={e => {
+                e.stopPropagation();
+                addToQuote(product);
               }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#fffbeb'; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.95)'; }}
-            >
-              <Eye className="w-3.5 h-3.5 text-amber-700" />
-              <span>Quick View</span>
-            </button>
-            <button
-              onClick={e => { e.stopPropagation(); addToQuote(product); }}
               className="flex-1 flex items-center justify-center gap-1.5 py-2.5"
               style={{
                 background: '#b45309', color: 'white',
@@ -163,13 +150,9 @@ const FeaturedProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </div>
       </div>
 
-      <ProductModal product={product} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-
       <style>{`
         @media (max-width: 640px) {
-          /* Hide action bar — tapping the card opens the modal */
           .fpc-action-bar { display: none !important; }
-          /* Tighter content */
           .fpc-content { padding: 0.65rem 0.75rem 0.8rem !important; }
           .fpc-content h3 { font-size: 0.85rem !important; margin-bottom: 0.2rem !important; }
           .fpc-content p  { font-size: 0.72rem !important; margin-bottom: 0.35rem !important; }

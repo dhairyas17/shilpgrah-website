@@ -8,7 +8,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
 import FeaturedProductCard from './featureModalCards';
-import ProductModal from './ProductModal';
+import FeaturedProductModal from './FeaturedProductModal';
 import { getFeaturedProducts } from '../data/products';
 import { Product } from '../types/Product';
 
@@ -41,11 +41,15 @@ const FeaturedProducts: React.FC = () => {
   const nextRef = useRef<HTMLButtonElement>(null);
 
   const handleProductClick = (product: Product) => {
-    setSelectedProduct(product); setIsModalOpen(true);
+    setSelectedProduct(product);
+    setIsModalOpen(true);
     if (swiperRef.current?.autoplay) swiperRef.current.autoplay.stop();
   };
+
   const handleModalClose = () => {
-    setIsModalOpen(false); setSelectedProduct(null);
+    setIsModalOpen(false);
+    // Delay clearing the product so the modal exit animation completes cleanly
+    setTimeout(() => setSelectedProduct(null), 400);
     if (swiperRef.current?.autoplay) swiperRef.current.autoplay.start();
   };
 
@@ -135,8 +139,13 @@ const FeaturedProducts: React.FC = () => {
         </div>
       </div>
 
+      {/* Single modal instance — only mounts when a product is selected */}
       {selectedProduct && (
-        <ProductModal product={selectedProduct} isOpen={isModalOpen} onClose={handleModalClose} />
+        <FeaturedProductModal
+          product={selectedProduct}
+          isOpen={isModalOpen}
+          onClose={handleModalClose}
+        />
       )}
     </section>
   );
